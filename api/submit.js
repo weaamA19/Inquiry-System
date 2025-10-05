@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       const payload = req.body;
 
       // Forward data to Google Apps Script Web App
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvQL5Lyv-g_tNOStR9IwsKJjbeH71O2TIyroheO0AAwTDvvc-aDL-lGoPLIehWJaKp/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbya36o0hx6K6DRXPYYlTsuUPb-rTQisHpCpN0z3zkW3visrV2YrN25FuLBYs-VyO77B/exec';
 
       const response = await fetch(scriptURL, {
         method: 'POST',
