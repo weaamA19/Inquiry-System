@@ -78,8 +78,8 @@
   </main>
 
 <script>
-/* ======  Proxy URL for CORS-free submission ====== */
-const proxyURL = "https://script.google.com/macros/s/AKfycbysExk0aIehJdEuJpHqiA-gV5MC27nncXXrzeNLVNFb7vEnk5vlLZN2FiXE6nOtnU-z7A/exec"; // Replace with your Apps Script or Cloudflare Worker
+/* ====== Vercel API URL ====== */
+const proxyURL = "https://inquiry-system-five.vercel.app/api/submit"; // Replace with your actual Vercel endpoint
 
 /* Conditional follow-up questions */
 function showFollowupQuestions(){
@@ -101,7 +101,7 @@ function showFollowupQuestions(){
       <input id="add_section" name="add_section" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
     `;
   } 
-  // add other categories as needed
+  // You can add other categories as before
 }
 
 /* Collect form data */
@@ -125,7 +125,7 @@ function collectFormData(){
   return data;
 }
 
-/* Submit via proxy */
+/* Submit via Vercel serverless function */
 document.getElementById('inquiryForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const statusMsg = document.getElementById('statusMsg');
