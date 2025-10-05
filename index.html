@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inquiry Portal</title>
+</head>
+<body style="font-family:Arial, Helvetica, sans-serif; background:#f5f7fa; margin:0; padding:0;">
+
+  <!-- Header -->
+  <header style="background:#0066bf; color:#fff; padding:18px 12px; text-align:center; font-weight:700; font-size:20px;">
+    <!-- If you have a logo, replace this text with an <img> tag -->
+   Inquiry Submission Portal
+  </header>
+
+  <!-- Main form container -->
+  <main style="padding:24px;">
+    <form id="inquiryForm" style="background:#fff; max-width:900px; margin:0 auto; padding:22px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+
+      <!-- Student ID -->
+      <label style="display:block; font-weight:600; margin-top:12px;">Student ID</label>
+      <input id="studentId" name="studentId" required
+             style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+
+      <!-- Contact number -->
+      <label style="display:block; font-weight:600; margin-top:12px;">Student Contact Number</label>
+      <input id="contact" name="contact" required
+             style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+
+      <!-- Graduate? -->
+      <label style="display:block; font-weight:600; margin-top:12px;">Graduate Student?</label>
+      <select id="graduate" name="graduate" required
+              style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <option value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <!-- Registered min 12 hours? -->
+      <label style="display:block; font-weight:600; margin-top:12px;">Have you registered minimum 12 hours this semester?</label>
+      <select id="registered12" name="registered12" required
+              style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <option value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <!-- Category -->
+      <label style="display:block; font-weight:600; margin-top:12px;">Inquiry Category</label>
+      <select id="category" name="category" required onchange="showFollowupQuestions()"
+              style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <option value="">Select</option>
+        <option value="add">Adding Course(s)</option>
+        <option value="change">Change Section</option>
+        <option value="diploma">Diploma Program</option>
+        <option value="retake">Exam Retake</option>
+        <option value="training">Industrial Training Grade</option>
+        <option value="project">Senior Project</option>
+        <option value="other">Other Inquiries</option>
+      </select>
+
+      <!-- Container for conditional follow-up questions -->
+      <div id="extraQuestions" style="margin-top:14px;"></div>
+
+      <!-- Extra details -->
+      <label style="display:block; font-weight:600; margin-top:12px;">Extra Issue Details</label>
+      <textarea id="details" name="details" rows="4"
+                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
+                placeholder="Describe your issue..."></textarea>
+
+      <!-- Submit -->
+      <button type="submit"
+              style="background:#0066bf; color:#fff; border:none; padding:10px 18px; border-radius:8px; margin-top:18px; cursor:pointer; font-weight:600;">
+        Submit Inquiry
+      </button>
+
+      <p id="statusMsg" style="margin-top:12px; font-size:14px;"></p>
+    </form>
+  </main>
+
+<script>
+/* ======  Adding the Apps Script web app URL ====== */
+const scriptURL = "https://script.google.com/macros/s/AKfycbxbelB-LBP-LqEhZn3Bqu6M4wpUxNxTgitmhKQ5FydlfSdc7RpsECYIhLDxOqC8j9kB/exec";
+
+
+/* Display conditional follow-up fields depending on category */
+function showFollowupQuestions(){
+  const c = document.getElementById('category').value;
+  const container = document.getElementById('extraQuestions');
+  container.innerHTML = '';
+
+  if(c === 'add'){
+    container.innerHTML = `
+      <label style="display:block; font-weight:600; margin-top:10px;">Have you added the course to the waiting list?</label>
+      <select id="add_waitlist" name="add_waitlist" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;">
+        <option value="Yes">Yes</option><option value="No">No</option>
+      </select>
+
+      <label style="display:block; font-weight:600; margin-top:10px;">Course ID</label>
+      <input id="add_course" name="add_course" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+
+      <label style="display:block; font-weight:600; margin-top:10px;">Section Requested</label>
+      <input id="add_section" name="add_section" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+    `;
+  } else if(c === 'change'){
+    container.innerHTML = `
+      <label style="display:block; font-weight:600; margin-top:10px;">Course ID</label>
+      <input id="chg_course" name="chg_course" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+
+      <label style="display:block; font-weight:600; margin-top:10px;">Section Requested</label>
+      <input id="chg_section" name="chg_section" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+
+      <label style="display:block; font-weight:600; margin-top:10px;">Reason for change</label>
+      <textarea id="chg_reason" name="chg_reason" rows="3" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"></textarea>
+    `;
+  } else if(c === 'diploma'){
+    container.innerHTML = `
+      <label style="display:block; font-weight:600; margin-top:10px;">Do you see Advisor in SIS?</label>
+      <select id="dip_advisor" name="dip_advisor" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;">
+        <option value="Yes">Yes</option><option value="No">No</option>
+      </select>
+
+      <label style="display:block; font-weight:600; margin-top:10px;">What's your main issue?</label>
+      <select id="dip_issue" name="dip_issue" onchange="showDiplomaSubQuestions()" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;">
+        <option value="">Select</option>
+        <option value="equivalence">Course(s) equivalence</option>
+        <option value="advisor">Don't have an advisor</option>
+        <option value="other">Other</option>
+      </select>
+
+      <div id="diplomaExtra" style="margin-top:10px;"></div>
+    `;
+  } else if(c === 'retake'){
+    container.innerHTML = `
+      <label style="display:block; font-weight:600; margin-top:10px;">Have you filled in the Exam Retake form?</label>
+      <select id="ret_filled" name="ret_filled" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"><option>Yes</option><option>No</option></select>
+
+      <label style="display:block; font-weight:600; margin-top:10px;">Have you submitted your excuse to the Dr?</label>
+      <select id="ret_excuse" name="ret_excuse" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"><option>Yes</option><option>No</option></select>
+
+      <label style="display:block; font-weight:600; margin-top:10px;">Course ID for Exam Retake</label>
+      <input id="ret_course" name="ret_course" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+    `;
+  } else if(c === 'training'){
+    container.innerHTML = `
+      <label style="display:block; font-weight:600; margin-top:10px;">Do you need the Industrial Training grade?</label>
+      <select id="tr_need" name="tr_need" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"><option>Yes</option><option>No</option></select>
+
+      <label style="display:block; font-weight:600; margin-top:10px;">Others</label>
+      <textarea id="tr_others" name="tr_others" rows="3" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"></textarea>
+    `;
+  } else if(c === 'project'){
+    container.innerHTML = `<p style="margin-top:10px; font-weight:600;">Kindly visit Dr. Reham, the Senior Project Coordinator.</p>`;
+  }
+}
+
+/* Diploma -> show sub-questions for equivalence and allow adding multiple pairs */
+function showDiplomaSubQuestions(){
+  const issue = document.getElementById('dip_issue').value;
+  const holder = document.getElementById('diplomaExtra');
+  holder.innerHTML = '';
+
+  if(issue === 'equivalence'){
+    holder.innerHTML = `
+      <div id="equivContainer"></div>
+      <button type="button" id="addEquivBtn" style="margin-top:8px; padding:8px 10px; border-radius:6px;">Add course equivalence</button>
+    `;
+    // initialize first row
+    addEquivRow();
+    document.getElementById('addEquivBtn').addEventListener('click', addEquivRow);
+  }
+}
+
+/* add one equivalence row (Course ID + Equivalent ID) */
+function addEquivRow(){
+  const container = document.getElementById('equivContainer');
+  const idx = container.children.length + 1;
+  const div = document.createElement('div');
+  div.className = 'equivRow';
+  div.style = 'border:1px dashed #ddd; padding:8px; margin-top:8px; border-radius:6px;';
+
+  div.innerHTML = `
+    <label style="font-weight:600;">Course ID</label>
+    <input class="eq_course" name="eq_course_${idx}" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+
+    <label style="font-weight:600; margin-top:8px;">Equivalent ID</label>
+    <input class="eq_equiv" name="eq_equiv_${idx}" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+
+    <div style="text-align:right; margin-top:6px;">
+      <button type="button" class="removeEquiv" style="padding:6px 8px; border-radius:6px;">Remove</button>
+    </div>
+  `;
+  container.appendChild(div);
+
+  // attach remove handler
+  div.querySelector('.removeEquiv').addEventListener('click', function(){ div.remove(); });
+}
+
+/* Collect form data + conditional fields into a structured object */
+function collectFormData(){
+  const data = {
+    studentId: document.getElementById('studentId').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    graduate: document.getElementById('graduate').value,
+    registered12: document.getElementById('registered12').value,
+    category: document.getElementById('category').value,
+    details: document.getElementById('details').value.trim(),
+    extra: {}
+  };
+
+  const c = data.category;
+
+  if(c === 'add'){
+    data.extra.waitlist = document.getElementById('add_waitlist')?.value || '';
+    data.extra.courseId = document.getElementById('add_course')?.value || '';
+    data.extra.section = document.getElementById('add_section')?.value || '';
+  } else if(c === 'change'){
+    data.extra.courseId = document.getElementById('chg_course')?.value || '';
+    data.extra.section = document.getElementById('chg_section')?.value || '';
+    data.extra.reason = document.getElementById('chg_reason')?.value || '';
+  } else if(c === 'diploma'){
+    data.extra.seeAdvisor = document.getElementById('dip_advisor')?.value || '';
+    data.extra.mainIssue = document.getElementById('dip_issue')?.value || '';
+    if(data.extra.mainIssue === 'equivalence'){
+      // gather equivalence rows
+      data.extra.equivalences = [];
+      const rows = document.querySelectorAll('.equivRow');
+      rows.forEach(r => {
+        const course = r.querySelector('.eq_course')?.value || '';
+        const equiv = r.querySelector('.eq_equiv')?.value || '';
+        if(course || equiv) data.extra.equivalences.push({ course, equivalent: equiv });
+      });
+    }
+  } else if(c === 'retake'){
+    data.extra.filledForm = document.getElementById('ret_filled')?.value || '';
+    data.extra.submittedExcuse = document.getElementById('ret_excuse')?.value || '';
+    data.extra.courseId = document.getElementById('ret_course')?.value || '';
+  } else if(c === 'training'){
+    data.extra.needGrade = document.getElementById('tr_need')?.value || '';
+    data.extra.others = document.getElementById('tr_others')?.value || '';
+  }
+
+  return data;
+}
+
+/* Submit handler: POST to Apps Script web app */
+document.getElementById('inquiryForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const statusMsg = document.getElementById('statusMsg');
+
+  // basic validation
+  if(!document.getElementById('studentId').value.trim()){
+    statusMsg.style.color = 'crimson'; statusMsg.textContent = 'Please enter Student ID.'; return;
+  }
+
+  statusMsg.style.color = '#333'; statusMsg.textContent = 'Submitting...';
+
+  const payload = collectFormData();
+
+  try {
+    const res = await fetch(scriptURL, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if(res.ok){
+      statusMsg.style.color = 'green';
+      statusMsg.textContent = 'Inquiry submitted successfully!';
+      this.reset();
+      document.getElementById('extraQuestions').innerHTML = '';
+    } else {
+      const txt = await res.text();
+      statusMsg.style.color = 'crimson';
+      statusMsg.textContent = 'Submission failed. Server returned an error.';
+      console.error('Server error response:', txt);
+    }
+  } catch(err){
+    console.error(err);
+    statusMsg.style.color = 'crimson';
+    statusMsg.textContent = 'Submission failed. See console for details (possible CORS or network issue).';
+  }
+});
+</script>
+
+</body>
+</html>
