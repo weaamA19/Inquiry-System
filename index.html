@@ -9,7 +9,6 @@
 
   <!-- Header -->
   <header style="background:#0066bf; color:#fff; padding:18px 12px; text-align:center; font-weight:700; font-size:20px;">
-    <!-- If you have a logo, replace this text with an <img> tag -->
    Inquiry Submission Portal
   </header>
 
@@ -79,11 +78,10 @@
   </main>
 
 <script>
-/* ======  Adding the Apps Script web app URL ====== */
-const scriptURL = "https://script.google.com/macros/s/AKfycbysExk0aIehJdEuJpHqiA-gV5MC27nncXXrzeNLVNFb7vEnk5vlLZN2FiXE6nOtnU-z7A/exec";
+/* ======  Proxy URL for CORS-free submission ====== */
+const proxyURL = "https://script.google.com/macros/s/AKfycbysExk0aIehJdEuJpHqiA-gV5MC27nncXXrzeNLVNFb7vEnk5vlLZN2FiXE6nOtnU-z7A/exec"; // Replace with your Apps Script or Cloudflare Worker
 
-
-/* Display conditional follow-up fields depending on category */
+/* Conditional follow-up questions */
 function showFollowupQuestions(){
   const c = document.getElementById('category').value;
   const container = document.getElementById('extraQuestions');
@@ -102,101 +100,11 @@ function showFollowupQuestions(){
       <label style="display:block; font-weight:600; margin-top:10px;">Section Requested</label>
       <input id="add_section" name="add_section" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
     `;
-  } else if(c === 'change'){
-    container.innerHTML = `
-      <label style="display:block; font-weight:600; margin-top:10px;">Course ID</label>
-      <input id="chg_course" name="chg_course" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
-
-      <label style="display:block; font-weight:600; margin-top:10px;">Section Requested</label>
-      <input id="chg_section" name="chg_section" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
-
-      <label style="display:block; font-weight:600; margin-top:10px;">Reason for change</label>
-      <textarea id="chg_reason" name="chg_reason" rows="3" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"></textarea>
-    `;
-  } else if(c === 'diploma'){
-    container.innerHTML = `
-      <label style="display:block; font-weight:600; margin-top:10px;">Do you see Advisor in SIS?</label>
-      <select id="dip_advisor" name="dip_advisor" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;">
-        <option value="Yes">Yes</option><option value="No">No</option>
-      </select>
-
-      <label style="display:block; font-weight:600; margin-top:10px;">What's your main issue?</label>
-      <select id="dip_issue" name="dip_issue" onchange="showDiplomaSubQuestions()" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;">
-        <option value="">Select</option>
-        <option value="equivalence">Course(s) equivalence</option>
-        <option value="advisor">Don't have an advisor</option>
-        <option value="other">Other</option>
-      </select>
-
-      <div id="diplomaExtra" style="margin-top:10px;"></div>
-    `;
-  } else if(c === 'retake'){
-    container.innerHTML = `
-      <label style="display:block; font-weight:600; margin-top:10px;">Have you filled in the Exam Retake form?</label>
-      <select id="ret_filled" name="ret_filled" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"><option>Yes</option><option>No</option></select>
-
-      <label style="display:block; font-weight:600; margin-top:10px;">Have you submitted your excuse to the Dr?</label>
-      <select id="ret_excuse" name="ret_excuse" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"><option>Yes</option><option>No</option></select>
-
-      <label style="display:block; font-weight:600; margin-top:10px;">Course ID for Exam Retake</label>
-      <input id="ret_course" name="ret_course" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
-    `;
-  } else if(c === 'training'){
-    container.innerHTML = `
-      <label style="display:block; font-weight:600; margin-top:10px;">Do you need the Industrial Training grade?</label>
-      <select id="tr_need" name="tr_need" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"><option>Yes</option><option>No</option></select>
-
-      <label style="display:block; font-weight:600; margin-top:10px;">Others</label>
-      <textarea id="tr_others" name="tr_others" rows="3" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;"></textarea>
-    `;
-  } else if(c === 'project'){
-    container.innerHTML = `<p style="margin-top:10px; font-weight:600;">Kindly visit Dr. Reham, the Senior Project Coordinator.</p>`;
-  }
+  } 
+  // add other categories as needed
 }
 
-/* Diploma -> show sub-questions for equivalence and allow adding multiple pairs */
-function showDiplomaSubQuestions(){
-  const issue = document.getElementById('dip_issue').value;
-  const holder = document.getElementById('diplomaExtra');
-  holder.innerHTML = '';
-
-  if(issue === 'equivalence'){
-    holder.innerHTML = `
-      <div id="equivContainer"></div>
-      <button type="button" id="addEquivBtn" style="margin-top:8px; padding:8px 10px; border-radius:6px;">Add course equivalence</button>
-    `;
-    // initialize first row
-    addEquivRow();
-    document.getElementById('addEquivBtn').addEventListener('click', addEquivRow);
-  }
-}
-
-/* add one equivalence row (Course ID + Equivalent ID) */
-function addEquivRow(){
-  const container = document.getElementById('equivContainer');
-  const idx = container.children.length + 1;
-  const div = document.createElement('div');
-  div.className = 'equivRow';
-  div.style = 'border:1px dashed #ddd; padding:8px; margin-top:8px; border-radius:6px;';
-
-  div.innerHTML = `
-    <label style="font-weight:600;">Course ID</label>
-    <input class="eq_course" name="eq_course_${idx}" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
-
-    <label style="font-weight:600; margin-top:8px;">Equivalent ID</label>
-    <input class="eq_equiv" name="eq_equiv_${idx}" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
-
-    <div style="text-align:right; margin-top:6px;">
-      <button type="button" class="removeEquiv" style="padding:6px 8px; border-radius:6px;">Remove</button>
-    </div>
-  `;
-  container.appendChild(div);
-
-  // attach remove handler
-  div.querySelector('.removeEquiv').addEventListener('click', function(){ div.remove(); });
-}
-
-/* Collect form data + conditional fields into a structured object */
+/* Collect form data */
 function collectFormData(){
   const data = {
     studentId: document.getElementById('studentId').value.trim(),
@@ -208,59 +116,34 @@ function collectFormData(){
     extra: {}
   };
 
-  const c = data.category;
-
-  if(c === 'add'){
+  if(data.category === 'add'){
     data.extra.waitlist = document.getElementById('add_waitlist')?.value || '';
     data.extra.courseId = document.getElementById('add_course')?.value || '';
     data.extra.section = document.getElementById('add_section')?.value || '';
-  } else if(c === 'change'){
-    data.extra.courseId = document.getElementById('chg_course')?.value || '';
-    data.extra.section = document.getElementById('chg_section')?.value || '';
-    data.extra.reason = document.getElementById('chg_reason')?.value || '';
-  } else if(c === 'diploma'){
-    data.extra.seeAdvisor = document.getElementById('dip_advisor')?.value || '';
-    data.extra.mainIssue = document.getElementById('dip_issue')?.value || '';
-    if(data.extra.mainIssue === 'equivalence'){
-      // gather equivalence rows
-      data.extra.equivalences = [];
-      const rows = document.querySelectorAll('.equivRow');
-      rows.forEach(r => {
-        const course = r.querySelector('.eq_course')?.value || '';
-        const equiv = r.querySelector('.eq_equiv')?.value || '';
-        if(course || equiv) data.extra.equivalences.push({ course, equivalent: equiv });
-      });
-    }
-  } else if(c === 'retake'){
-    data.extra.filledForm = document.getElementById('ret_filled')?.value || '';
-    data.extra.submittedExcuse = document.getElementById('ret_excuse')?.value || '';
-    data.extra.courseId = document.getElementById('ret_course')?.value || '';
-  } else if(c === 'training'){
-    data.extra.needGrade = document.getElementById('tr_need')?.value || '';
-    data.extra.others = document.getElementById('tr_others')?.value || '';
   }
 
   return data;
 }
 
-/* Submit handler: POST to Apps Script web app */
+/* Submit via proxy */
 document.getElementById('inquiryForm').addEventListener('submit', async function(e){
   e.preventDefault();
   const statusMsg = document.getElementById('statusMsg');
 
-  // basic validation
   if(!document.getElementById('studentId').value.trim()){
-    statusMsg.style.color = 'crimson'; statusMsg.textContent = 'Please enter Student ID.'; return;
+    statusMsg.style.color = 'crimson'; 
+    statusMsg.textContent = 'Please enter Student ID.';
+    return;
   }
 
-  statusMsg.style.color = '#333'; statusMsg.textContent = 'Submitting...';
+  statusMsg.style.color = '#333';
+  statusMsg.textContent = 'Submitting...';
 
   const payload = collectFormData();
 
   try {
-    const res = await fetch(scriptURL, {
+    const res = await fetch(proxyURL, {
       method: 'POST',
-      mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
@@ -279,7 +162,7 @@ document.getElementById('inquiryForm').addEventListener('submit', async function
   } catch(err){
     console.error(err);
     statusMsg.style.color = 'crimson';
-    statusMsg.textContent = 'Submission failed. See console for details (possible CORS or network issue).';
+    statusMsg.textContent = 'Submission failed. See console for details.';
   }
 });
 </script>
