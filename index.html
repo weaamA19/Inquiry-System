@@ -93,43 +93,43 @@ function showFollowupQuestions() {
   if (category === 'add') {
     container.innerHTML = `
       <label style="${labelStyle}">Have you added the course to the waiting list?</label>
-      <select id="q1" style="${inputStyle}">
+      <select id="q1" data-label="Have you added the course to the waiting list?" style="${inputStyle}">
         <option value="" selected disabled>Select</option>
         <option>Yes</option>
         <option>No</option>
       </select>
 
       <label style="${labelStyle}">Course ID</label>
-      <input type="text" id="q2" style="${inputStyle}">
+      <input type="text" id="q2" data-label="Course ID" style="${inputStyle}">
 
       <label style="${labelStyle}">Section Requested</label>
-      <input type="text" id="q3" style="${inputStyle}">
+      <input type="text" id="q3" data-label="Section Requested" style="${inputStyle}">
     `;
   } else if (category === 'change') {
     container.innerHTML = `
       <label style="${labelStyle}">Course ID</label>
-      <input type="text" id="q1" style="${inputStyle}">
+      <input type="text" id="q1" data-label="Course ID" style="${inputStyle}">
 
       <label style="${labelStyle}">Which section are you currently registered in?</label>
-      <input type="text" id="q2" style="${inputStyle}">
+      <input type="text" id="q2" data-label="Current Section" style="${inputStyle}">
 
       <label style="${labelStyle}">Which section would you like to change to?</label>
-      <input type="text" id="q3" style="${inputStyle}">
+      <input type="text" id="q3" data-label="Requested Section" style="${inputStyle}">
 
       <label style="${labelStyle}">What are the reasons for switching to the new section?</label>
-      <textarea id="q4" style="${inputStyle}"></textarea>
+      <textarea id="q4" data-label="Reason for change" style="${inputStyle}"></textarea>
     `;
   } else if (category === 'diploma') {
     container.innerHTML = `
       <label style="${labelStyle}">Do you see your advisor listed in SIS?</label>
-      <select id="q1" style="${inputStyle}">
+      <select id="q1" data-label="Advisor in SIS?" style="${inputStyle}">
         <option value="" selected disabled>Select</option>
         <option>Yes</option>
         <option>No</option>
       </select>
 
       <label style="${labelStyle}">What's your main issue?</label>
-      <select id="q2" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
+      <select id="q2" data-label="Main Issue" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
         <option value="">Select</option>
         <option value="equivalence">Course(s) equivalence</option>
         <option value="advisor">Don't have an advisor</option>
@@ -141,33 +141,33 @@ function showFollowupQuestions() {
   } else if (category === 'retake') {
     container.innerHTML = `
       <label style="${labelStyle}">Have you filled in the Exam Retake form?</label>
-      <select id="q1" style="${inputStyle}">
+      <select id="q1" data-label="Filled Exam Retake Form?" style="${inputStyle}">
         <option value="">Select</option>
         <option>Yes</option>
         <option>No</option>
       </select>
 
       <label style="${labelStyle}">Have you submitted your excuse to the Dr?</label>
-      <select id="q2" style="${inputStyle}">
+      <select id="q2" data-label="Submitted Excuse?" style="${inputStyle}">
         <option value="">Select</option>
         <option>Yes</option>
         <option>No</option>
       </select>
 
       <label style="${labelStyle}">Course ID for Exam Retake</label>
-      <input type="text" id="q3" style="${inputStyle}">
+      <input type="text" id="q3" data-label="Exam Retake Course ID" style="${inputStyle}">
     `;
   } else if (category === 'training') {
     container.innerHTML = `
       <label style="${labelStyle}">Do you need the Industrial Training grade?</label>
-      <select id="q1" style="${inputStyle}">
+      <select id="q1" data-label="Industrial Training Grade Needed?" style="${inputStyle}">
         <option value="">Select</option>
         <option>Yes</option>
         <option>No</option>
       </select>
 
       <label style="${labelStyle}">Others</label>
-      <textarea id="q2" style="${inputStyle}"></textarea>
+      <textarea id="q2" data-label="Other Training Issue" style="${inputStyle}"></textarea>
     `;
   } else if (category === 'project') {
     container.innerHTML = `
@@ -187,15 +187,15 @@ function showDiplomaSubQuestions() {
   if (issue === 'equivalence') {
     diplomaExtra.innerHTML = `
       <label style="${labelStyle}">Course ID</label>
-      <input type="text" id="eq1" style="${inputStyle}">
+      <input type="text" id="eq1" data-label="Course ID" style="${inputStyle}">
       
       <label style="${labelStyle}">Equivalent ID</label>
-      <input type="text" id="eq2" style="${inputStyle}">
+      <input type="text" id="eq2" data-label="Equivalent Course ID" style="${inputStyle}">
     `;
   } else if (issue === 'other') {
     diplomaExtra.innerHTML = `
       <label style="${labelStyle}">Please describe:</label>
-      <textarea id="eq3" style="${inputStyle}"></textarea>
+      <textarea id="eq3" data-label="Other Diploma Issue" style="${inputStyle}"></textarea>
     `;
   }
 }
@@ -212,14 +212,16 @@ function collectFormData() {
     extra: {}
   };
 
-  // Collect all dynamically generated fields
+  // Collect all dynamic extra fields with readable labels
   const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
-  extraInputs.forEach((el, index) => {
-    data.extra[`q${index + 1}`] = el.value.trim();
+  extraInputs.forEach(el => {
+    const label = el.getAttribute('data-label') || el.id; // fallback to ID
+    data.extra[label] = el.value.trim();
   });
 
   return data;
 }
+
   
 /* Submit via Vercel serverless function */
 document.getElementById('inquiryForm').addEventListener('submit', async function(e){
