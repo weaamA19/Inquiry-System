@@ -227,9 +227,80 @@
           <label style="${labelStyle}">What are the reasons for switching to the new section?</label>
           <textarea id="q4" data-label="Reason for change" style="${inputStyle}"></textarea>
         `;
-      }
+      } else if (category === 'Diploma_Program') {
+    container.innerHTML = `
+      <label style="${labelStyle}">Is your advisor listed in SIS?</label>
+      <select id="q1" data-label="Advisor appears in SIS?" style="${inputStyle}">
+        <option value="" selected disabled>Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
 
-      // Additional categories can follow the same format...
+      <label style="${labelStyle}">Main Issue</label>
+      <select id="q2" data-label="Main Issue" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
+        <option value="">Select</option>
+        <option value="courses_equivalence">Course(s) equivalence</option>
+        <option value="advisor_not_shown">Don't have an advisor</option>
+        <option value="other_issue">Others</option>
+      </select>
+
+      <div id="diplomaExtra"></div>
+    `;
+  } else if (category === 'Exam_Retake') {
+    container.innerHTML = `
+      <label style="${labelStyle}">Course ID for Exam Retake</label>
+      <input type="text" id="q3" data-label="Course ID" style="${inputStyle}">
+
+      <label style="${labelStyle}">Have you filled the Exam Retake form?</label>
+      <select id="q1" data-label="Filled Exam Retake Form?" style="${inputStyle}">
+        <option value="">Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label style="${labelStyle}">Have you submitted your excuse to the professor?</label>
+      <select id="q2" data-label="Submitted Excuse?" style="${inputStyle}">
+        <option value="">Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label style="${labelStyle}">Professor Name</label>
+      <input type="text" id="q3" data-label="Professor Name" style="${inputStyle}">
+
+      <label style="${labelStyle}">Briefly explain your excuse</label>
+      <input type="text" id="q4" data-label="Explain Excuse" style="${inputStyle}">
+    `;
+  } else if (category === 'Industrial_Training') {
+    container.innerHTML = `
+      <label style="${labelStyle}">Main Issue</label>
+      <select id="q2" data-label="Main Issue" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
+        <option value="" disabled selected>Select an option</option>
+        <option value="training_grade">Need Industrial Training Grade</option>
+        <option value="no_training_place">Need place for Industrial Training</option>
+        <option value="other_issue">Others</option>
+      </select>
+    `;
+  } else if (category === 'Senior_Project') {
+    container.innerHTML = `
+      <div style="margin-top:12px;">
+        <p style="font-weight:600; color:#0066bf;">Kindly visit the Senior Project Coordinator.</p>
+        <p style="font-size:14px; color:#0066bf; margin:6px 0 25px 0;">
+          If the Head of Department was your supervisor, send a message on Teams or visit her office after registration week.
+        </p>
+      </div>
+    `;
+  } else if (category === 'Others') {
+    container.innerHTML = `
+      <label style="${labelStyle}">Please describe your inquiry</label>
+      <textarea id="q1" data-label="Other Inquiry Details" style="${inputStyle}"></textarea>
+    `;
+  }
+}
+
+
+
+      
     }
 
     function collectFormData() {
