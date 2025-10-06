@@ -140,6 +140,10 @@ function showFollowupQuestions() {
     `;
   } else if (category === 'retake') {
     container.innerHTML = `
+
+      <label style="${labelStyle}">Course ID for Exam Retake</label>
+      <input type="text" id="q3" data-label="Exam Retake Course ID" style="${inputStyle}">
+      
       <label style="${labelStyle}">Have you filled in the Exam Retake form?</label>
       <select id="q1" data-label="Filled Exam Retake Form?" style="${inputStyle}">
         <option value="">Select</option>
@@ -148,14 +152,14 @@ function showFollowupQuestions() {
       </select>
 
       <label style="${labelStyle}">Have you submitted your excuse to the Dr?</label>
-      <select id="q2" data-label="Submitted Excuse?" style="${inputStyle}">
+      <select id="q2" data-label="Submitted Excuse to Course Dr?" style="${inputStyle}">
         <option value="">Select</option>
         <option>Yes</option>
         <option>No</option>
       </select>
-      
-      <label style="${labelStyle}">Course ID for Exam Retake</label>
-      <input type="text" id="q3" data-label="Exam Retake Course ID" style="${inputStyle}">
+
+      <label style="${labelStyle}">Professor Name for the Course:</label>
+      <input type="text" id="q3" data-label="Course_Professor:" style="${inputStyle}">
 
       <label style="${labelStyle}">Briefly explain your excuse:</label>
       <input type="text" id="q3" data-label="Briefly_Explain_Excuse" style="${inputStyle}">
