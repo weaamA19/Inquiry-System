@@ -122,7 +122,7 @@ function showFollowupQuestions() {
   } else if (category === 'diploma') {
     container.innerHTML = `
       <label style="${labelStyle}">Do you see your advisor listed in SIS?</label>
-      <select id="q1" data-label="Advisor in SIS?" style="${inputStyle}">
+      <select id="q1" data-label="Advisor appears in SIS?" style="${inputStyle}">
         <option value="" selected disabled>Select</option>
         <option>Yes</option>
         <option>No</option>
@@ -131,9 +131,9 @@ function showFollowupQuestions() {
       <label style="${labelStyle}">What's your main issue?</label>
       <select id="q2" data-label="Main Issue" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
         <option value="">Select</option>
-        <option value="equivalence">Course(s) equivalence</option>
-        <option value="advisor">Don't have an advisor</option>
-        <option value="other">Others</option>
+        <option value="courses_equivalence">Course(s) equivalence</option>
+        <option value="advisor_not_shown">Don't have an advisor</option>
+        <option value="other_issue">Others</option>
       </select>
 
       <div id="diplomaExtra"></div>
