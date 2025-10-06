@@ -1,31 +1,193 @@
-// api/submit.js
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*'); 
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inquiry Portal</title>
+</head>
+<body style="font-family:Arial, Helvetica, sans-serif; background:#f5f7fa; margin:0; padding:0;">
 
-  if(req.method === 'OPTIONS') return res.status(200).end();
+  <!-- ===== Navigation Bar ===== -->
+  <nav style="display:flex; justify-content:center; gap:20px; padding:16px; background:#fff; border-bottom:1px solid #ddd;">
+    <button onclick="showSection('submit')" id="submitBtn"
+      style="background:#0066bf; color:white; border:none; padding:10px 18px; border-radius:6px; font-weight:600; cursor:pointer;">
+      Submit Inquiry
+    </button>
+    <button onclick="showSection('followup')" id="followBtn"
+      style="background:#eaeaea; color:#333; border:none; padding:10px 18px; border-radius:6px; font-weight:600; cursor:pointer;">
+      Follow Up Inquiry
+    </button>
+  </nav>
 
-  if (req.method === 'POST') {
+  <!-- ===== Header ===== -->
+  <header style="
+    color:#000;
+    text-align:center;
+    padding:32px 12px;
+    font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-weight:800;
+    font-size:32px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    background:transparent;
+  ">
+    Inquiry Portal
+    <div style="
+      width:140px;
+      height:4px;
+      background:linear-gradient(90deg, #0066bf, #00aaff);
+      margin:14px auto 0;
+      border-radius:2px;
+      box-shadow:0 2px 6px rgba(0,102,191,0.4);
+    "></div>
+  </header>
+
+  <!-- ===== Main Sections ===== -->
+  <main style="padding:24px;">
+    <!-- === Submit Form Section === -->
+    <div id="submitSection">
+      <form id="inquiryForm" style="background:#fff; max-width:900px; margin:0 auto; padding:22px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+        <!-- same form fields you already had -->
+        <!-- Student ID -->
+        <label style="display:block; font-weight:600; margin-top:12px;">Student University ID</label>
+        <input id="studentId" name="studentId" required
+              style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+
+        <!-- Contact number -->
+        <label style="display:block; font-weight:600; margin-top:12px;">Student Contact Number</label>
+        <input id="contact" name="contact" required
+              style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+
+        <!-- Graduate? -->
+        <label style="display:block; font-weight:600; margin-top:12px;">Graduate Student?</label>
+        <select id="graduate" name="graduate" required
+                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+
+        <!-- Registered min 12 hours? -->
+        <label style="display:block; font-weight:600; margin-top:12px;">Have you registered minimum 12 hours this semester?</label>
+        <select id="registered12" name="registered12" required
+                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+
+        <!-- Category -->
+        <label style="display:block; font-weight:600; margin-top:12px;">Inquiry Category</label>
+        <select id="category" name="category" required onchange="showFollowupQuestions()"
+                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+          <option value="">Select</option>
+          <option value="Adding_Course">Adding Course(s)</option>
+          <option value="Section_Change">Change Section</option>
+          <option value="Diploma_Program">Diploma Program</option>
+          <option value="Exam_Retake">Exam Retake</option>
+          <option value="Industrial_Training">Industrial Training Grade</option>
+          <option value="Senior_Project">Senior Project</option>
+          <option value="Others">Other Inquiries</option>
+        </select>
+
+        <div id="extraQuestions" style="margin-top:14px;"></div>
+
+        <!-- Issue details -->
+        <label style="display:block; font-weight:600; margin-top:12px;">Issue Details</label>
+        <textarea id="details" name="details" rows="4"
+                  style="width:100%;box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
+                  placeholder="Describe your issue..."></textarea>
+
+        <!-- Submit -->
+        <button type="submit"
+                style="background:#0066bf; color:#fff; border:none; padding:10px 18px; border-radius:8px; margin-top:18px; cursor:pointer; font-weight:600;">
+          Submit Inquiry
+        </button>
+
+        <p id="statusMsg" style="margin-top:12px; font-size:14px;"></p>
+      </form>
+    </div>
+
+    <!-- === Follow-Up Section === -->
+    <div id="followupSection" style="display:none; text-align:center;">
+      <div style="background:#fff; max-width:600px; margin:0 auto; padding:30px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+        <h2 style="font-size:22px; margin-bottom:12px;">Follow Up Inquiry</h2>
+        <p>Enter your Student ID to check your inquiry status.</p>
+        <input id="followId" type="text" placeholder="Enter Student ID"
+              style="width:80%; max-width:400px; padding:10px 12px; border:1px solid #ccc; border-radius:6px; font-size:15px; margin-top:10px;">
+        <button onclick="checkStatus()" style="background:#0066bf; color:white; border:none; padding:10px 18px; border-radius:6px; font-weight:600; margin-top:10px; cursor:pointer;">Check Status</button>
+
+        <div id="followupResult" style="margin-top:20px; text-align:left;"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+  const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
+  const followupURL = "https://script.google.com/macros/s/AKfycbzaF65IUhTpBh7fYfUhhDiq80UwAmgHAYk3Q75rgZZmeaQlUDDUArcZYWhrossX_X49/exec";
+
+  /* ===== MENU SWITCHING ===== */
+  function showSection(section) {
+    const submit = document.getElementById('submitSection');
+    const follow = document.getElementById('followupSection');
+    const sBtn = document.getElementById('submitBtn');
+    const fBtn = document.getElementById('followBtn');
+    if (section === 'submit') {
+      submit.style.display = 'block';
+      follow.style.display = 'none';
+      sBtn.style.background = '#0066bf';
+      sBtn.style.color = 'white';
+      fBtn.style.background = '#eaeaea';
+      fBtn.style.color = '#333';
+    } else {
+      submit.style.display = 'none';
+      follow.style.display = 'block';
+      fBtn.style.background = '#0066bf';
+      fBtn.style.color = 'white';
+      sBtn.style.background = '#eaeaea';
+      sBtn.style.color = '#333';
+    }
+  }
+
+  /* ===== FOLLOW-UP Page ===== */
+  async function checkStatus() {
+    const id = document.getElementById('followId').value.trim();
+    const resultDiv = document.getElementById('followupResult');
+    resultDiv.innerHTML = '';
+
+    if (!id) {
+      resultDiv.innerHTML = '<p style="color:red;">Please enter your Student ID.</p>';
+      return;
+    }
+
     try {
-      const payload = req.body;
+      const res = await fetch(followupURL + "?id=" + encodeURIComponent(id));
+      const data = await res.json();
 
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzaF65IUhTpBh7fYfUhhDiq80UwAmgHAYk3Q75rgZZmeaQlUDDUArcZYWhrossX_X49/exec';
+      if (!data || data.length === 0) {
+        resultDiv.innerHTML = '<p>No inquiries found for this ID.</p>';
+        return;
+      }
 
-      const response = await fetch(scriptURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+      let html = '<h3>Your Inquiries:</h3>';
+      data.forEach((d, i) => {
+        html += `
+          <div style="border:1px solid #ccc; border-radius:6px; padding:10px; margin-top:10px;">
+            <p><strong>Inquiry #${i + 1}</strong></p>
+            <p><strong>Category:</strong> ${d.category}</p>
+            <p><strong>Details:</strong> ${d.details}</p>
+            <p><strong>Status:</strong> <span style="color:${d.status === 'Pending' ? 'orange' : 'green'}">${d.status}</span></p>
+          </div>
+        `;
       });
+      resultDiv.innerHTML = html;
 
-      const text = await response.text();
-
-      return res.status(200).json({ success: true, message: text });
     } catch (err) {
       console.error(err);
-      return res.status(500).json({ success: false, message: 'Server Error' });
+      resultDiv.innerHTML = '<p style="color:red;">Error fetching data. Please try again later.</p>';
     }
-  } else {
-    return res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
-}
+  </script>
+
+</body>
+</html>
