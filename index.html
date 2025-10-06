@@ -175,10 +175,21 @@ function showFollowupQuestions() {
       </select>
     `;
   } else if (category === 'project') {
-    container.innerHTML = `
-      <p><strong>Kindly visit Dr. Reham, the Senior Project Coordinator.</strong></p>
-    `;
-  }
+  container.innerHTML = `
+    <div style="margin-top:12px;">
+      <p style="font-weight:600; color:#0066bf;">
+        Kindly visit Dr. Reham, the Senior Project Coordinator.
+      </p>
+      <p style="font-size:14px; color:#333; margin-top:6px;">
+        If the Head of Department was your supervisor, kindly send her a message on Teams or visit her office after the registration week.
+      </p>
+      <button 
+        style="margin-top:8px; padding:10px 20px; background-color:#0066bf; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
+        Message on Teams
+      </button>
+    </div>
+  `;
+}
 }
 
 function showDiplomaSubQuestions() {
