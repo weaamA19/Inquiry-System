@@ -61,8 +61,8 @@
       <!-- Container for conditional follow-up questions -->
       <div id="extraQuestions" style="margin-top:14px;"></div>
 
-      <!-- Extra details -->
-      <label style="display:block; font-weight:600; margin-top:12px;">Extra Issue Details</label>
+      <!-- Issue details -->
+      <label style="display:block; font-weight:600; margin-top:12px;">Issue Details</label>
       <textarea id="details" name="details" rows="4"
                 style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
                 placeholder="Describe your issue..."></textarea>
@@ -82,30 +82,114 @@
 const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
 
 /* Conditional follow-up questions */
-function showFollowupQuestions(){
-  const c = document.getElementById('category').value;
+function showFollowupQuestions() {
+  const category = document.getElementById('category').value;
   const container = document.getElementById('extraQuestions');
   container.innerHTML = '';
 
-  if(c === 'add'){
+  if (category === 'add') {
     container.innerHTML = `
-      <label style="display:block; font-weight:600; margin-top:10px;">Have you added the course to the waiting list?</label>
-      <select id="add_waitlist" name="add_waitlist" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;">
-        <option value="Yes">Yes</option><option value="No">No</option>
+      <label>Have you added the course to the waiting list?</label>
+      <select id="q1">
+        <option value="" selected disabled>Select</option>
+        <option>Yes</option>
+        <option>No</option>
       </select>
 
-      <label style="display:block; font-weight:600; margin-top:10px;">Course ID</label>
-      <input id="add_course" name="add_course" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+      <label>Course ID</label>
+      <input type="text" id="q2">
 
-      <label style="display:block; font-weight:600; margin-top:10px;">Section Requested</label>
-      <input id="add_section" name="add_section" style="width:100%; padding:8px; margin-top:6px; border-radius:6px;" />
+      <label>Section Requested</label>
+      <input type="text" id="q3">
     `;
-  } 
-  // You can add other categories as before
+  } else if (category === 'change') {
+    container.innerHTML = `
+      <label>Course ID</label>
+      <input type="text" id="q1">
+
+      <label>Which section are you currently registered in?</label>
+      <input type="text" id="q2">
+
+      <label>Which section would you like to change to?</label>
+      <input type="text" id="q3">
+
+      <label>What are the reasons for switching to the new section?</label>
+      <textarea id="q4"></textarea>
+    `;
+  } else if (category === 'diploma') {
+    container.innerHTML = `
+      <label>Do you see your advisor listed in SIS?</label>
+      <select id="q1">
+        <option value="" selected disabled>Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>What's your main issue?</label>
+      <select id="q2" onchange="showDiplomaSubQuestions()">
+        <option value="">Select</option>
+        <option value="equivalence">Course(s) equivalence</option>
+        <option value="advisor">Don't have an advisor</option>
+        <option value="other">Others</option>
+      </select>
+
+      <div id="diplomaExtra"></div>
+    `;
+  } else if (category === 'retake') {
+    container.innerHTML = `
+      <label>Have you filled in the Exam Retake form?</label>
+      <select id="q1">
+        <option value="">Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Have you submitted your excuse to the Dr?</label>
+      <select id="q2">
+        <option value="">Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Course ID for Exam Retake</label>
+      <input type="text" id="q3">
+    `;
+  } else if (category === 'training') {
+    container.innerHTML = `
+      <label>Do you need the Industrial Training grade?</label>
+      <select id="q1">
+        <option value="">Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label>Others</label>
+      <textarea id="q2"></textarea>
+    `;
+  } else if (category === 'project') {
+    container.innerHTML = `
+      <p><strong>Kindly visit Dr. Reham, the Senior Project Coordinator.</strong></p>
+    `;
+  }
+}
+
+function showDiplomaSubQuestions() {
+  const issue = document.getElementById('q2').value;
+  const diplomaExtra = document.getElementById('diplomaExtra');
+  diplomaExtra.innerHTML = '';
+
+  if (issue === 'equivalence') {
+    diplomaExtra.innerHTML = `
+      <label>Course ID</label><input type="text" id="eq1">
+      <label>Equivalent ID</label><input type="text" id="eq2">
+    `;
+  } else if (issue === 'other') {
+    diplomaExtra.innerHTML = `<label>Please describe:</label><textarea id="eq3"></textarea>`;
+  }
 }
 
 /* Collect form data */
-function collectFormData(){
+function collectFormData() {
   const data = {
     studentId: document.getElementById('studentId').value.trim(),
     contact: document.getElementById('contact').value.trim(),
@@ -116,15 +200,15 @@ function collectFormData(){
     extra: {}
   };
 
-  if(data.category === 'add'){
-    data.extra.waitlist = document.getElementById('add_waitlist')?.value || '';
-    data.extra.courseId = document.getElementById('add_course')?.value || '';
-    data.extra.section = document.getElementById('add_section')?.value || '';
-  }
+  // Collect all dynamically generated fields
+  const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
+  extraInputs.forEach((el, index) => {
+    data.extra[`q${index + 1}`] = el.value.trim();
+  });
 
   return data;
 }
-
+  
 /* Submit via Vercel serverless function */
 document.getElementById('inquiryForm').addEventListener('submit', async function(e){
   e.preventDefault();
