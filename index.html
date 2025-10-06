@@ -333,26 +333,25 @@
     }
   }
 
-  function collectFormData() {
-    const data = {
-      studentId: document.getElementById('studentId').value.trim(),
-      contact: document.getElementById('contact').value.trim(),
-      graduate: document.getElementById('graduate').value,
-      registered12: document.getElementById('registered12').value,
-      category: document.getElementById('category').value,
-      details: document.getElementById('details').value.trim()
-    };
+function collectFormData() {
+  const data = {
+    studentId: document.getElementById('studentId').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    graduate: document.getElementById('graduate').value,
+    registered12: document.getElementById('registered12').value,
+    category: document.getElementById('category').value,
+    details: document.getElementById('details').value.trim(),
+    extra: {}
+  };
 
-    const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
-    const extraFieldsArr = [];
-    extraInputs.forEach(input => {
-      if (input.value.trim() !== '') {
-        extraFieldsArr.push(`${input.dataset.label}: ${input.value.trim()}`);
-      }
-    });
-    data.extraFields = extraFieldsArr.join(' | ');
-    return data;
-  }
+  const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
+  extraInputs.forEach(el => {
+    const label = el.getAttribute('data-label') || el.id; // Use data-label for key
+    data.extra[label] = el.value.trim();
+  });
+
+  return data;
+}
 
   document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
     e.preventDefault();
