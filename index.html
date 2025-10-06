@@ -166,15 +166,13 @@ function showFollowupQuestions() {
     `;
   } else if (category === 'training') {
     container.innerHTML = `
-      <label style="${labelStyle}">Do you need the Industrial Training grade?</label>
-      <select id="q1" data-label="Industrial Training Grade Needed?" style="${inputStyle}">
-        <option value="">Select</option>
-        <option>Yes</option>
-        <option>No</option>
+      <label style="${labelStyle}">Please select your main issue:</label>
+      <select id="q2" data-label="Main Issue" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
+        <option value="" disabled selected>Select an option</option>
+        <option value="training_grade">Need Industrial Training Grade</option>
+        <option value="no_training_place">Need place for Industrial Training</option>
+        <option value="other_issue">Other issues</option>
       </select>
-
-      <label style="${labelStyle}">Others</label>
-      <textarea id="q2" data-label="Other Training Issue" style="${inputStyle}"></textarea>
     `;
   } else if (category === 'project') {
     container.innerHTML = `
