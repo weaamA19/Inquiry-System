@@ -153,9 +153,12 @@ function showFollowupQuestions() {
         <option>Yes</option>
         <option>No</option>
       </select>
-
+      
       <label style="${labelStyle}">Course ID for Exam Retake</label>
       <input type="text" id="q3" data-label="Exam Retake Course ID" style="${inputStyle}">
+
+      <label style="${labelStyle}">Briefly explain your excuse:</label>
+      <input type="text" id="q3" data-label="Briefly_Explain_Excuse" style="${inputStyle}">
     `;
   } else if (category === 'training') {
     container.innerHTML = `
