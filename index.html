@@ -294,7 +294,6 @@
     }
   }
 
-  /* ===== DIPLOMA SUBQUESTIONS LOGIC ===== */
   function showDiplomaSubQuestions() {
     const issue = document.getElementById('q2').value;
     const diplomaExtra = document.getElementById('diplomaExtra');
@@ -306,14 +305,17 @@
       diplomaExtra.innerHTML = `
         <div id="coursesContainer">
           <label style="${labelStyle}">Course ID #${courseCount}</label>
-          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" style="${inputStyle}">
-
+          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" 
+            style="${inputStyle}">
           <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
-          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" style="${inputStyle}">
+          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" 
+            style="${inputStyle}">
         </div>
-        <button type="button" id="addCourseBtn" style="margin-top:10px; padding:8px 16px; background-color:#0066bf; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">+ Add another course</button>
+        <button type="button" id="addCourseBtn" 
+          style="margin-top:10px; padding:8px 16px; background-color:#0066bf; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
+          + Add another course
+        </button>
       `;
-
       document.getElementById('addCourseBtn').addEventListener('click', () => {
         courseCount++;
         const container = document.getElementById('coursesContainer');
@@ -321,7 +323,6 @@
         newFields.innerHTML = `
           <label style="${labelStyle}">Course ID #${courseCount}</label>
           <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" style="${inputStyle}">
-
           <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
           <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" style="${inputStyle}">
         `;
@@ -332,7 +333,6 @@
     }
   }
 
-  /* ===== COLLECT FORM DATA ===== */
   function collectFormData() {
     const data = {
       studentId: document.getElementById('studentId').value.trim(),
@@ -343,49 +343,44 @@
       details: document.getElementById('details').value.trim()
     };
 
-    // Collect dynamic follow-up questions
     const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
+    const extraFieldsArr = [];
     extraInputs.forEach(input => {
-      if (input.id.startsWith('eq1_') || input.id.startsWith('eq2_')) {
-        if (!data.courses) data.courses = [];
-        const idx = parseInt(input.id.split('_')[1]) - 1;
-        if (!data.courses[idx]) data.courses[idx] = {};
-        data.courses[idx][input.id.startsWith('eq1_') ? 'courseID' : 'equivalentID'] = input.value.trim();
-      } else {
-        data[input.dataset.label] = input.value.trim();
+      if (input.value.trim() !== '') {
+        extraFieldsArr.push(`${input.dataset.label}: ${input.value.trim()}`);
       }
     });
-
+    data.extraFields = extraFieldsArr.join(' | ');
     return data;
   }
 
-  /* ===== FORM SUBMISSION ===== */
-  document.getElementById('inquiryForm').addEventListener('submit', async e => {
+  document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const status = document.getElementById('statusMsg');
-    status.textContent = 'Submitting...';
-    const payload = collectFormData();
-
+    status.style.color = '#333';
+    status.innerText = 'Submitting...';
     try {
       const res = await fetch(proxyURL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(collectFormData())
       });
-
-      if (res.ok) {
-        status.textContent = 'Inquiry submitted successfully!';
+      const json = await res.json();
+      if (json.success) {
+        status.style.color = 'green';
+        status.innerText = 'Inquiry submitted successfully!';
         document.getElementById('inquiryForm').reset();
         document.getElementById('extraQuestions').innerHTML = '';
       } else {
-        status.textContent = 'Failed to submit. Try again later.';
+        status.style.color = 'red';
+        status.innerText = 'Submission failed. Try again later.';
       }
     } catch (err) {
       console.error(err);
-      status.textContent = 'Error submitting. Try again later.';
+      status.style.color = 'red';
+      status.innerText = 'Error submitting form. Check console.';
     }
   });
   </script>
-
 </body>
 </html>
