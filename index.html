@@ -191,151 +191,75 @@
   /* ===== FOLLOW-UP QUESTIONS LOGIC ===== */
   let courseCount = 1;
 
-  function showFollowupQuestions() {
-    const category = document.getElementById('category').value;
-    const container = document.getElementById('extraQuestions');
-    container.innerHTML = '';
-    const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
-    const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
+function showFollowupQuestions() {
+  const category = document.getElementById('category').value;
+  const container = document.getElementById('extraQuestions');
+  container.innerHTML = '';
+  const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
+  const inputStyle = 'width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
 
-    if (category === 'Adding_Course') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Have you added the course to the waiting list?</label>
-        <select id="q1" data-label="Added to waiting list?" style="${inputStyle}">
-          <option value="" selected disabled>Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q2" data-label="Course ID" style="${inputStyle}">
-        <label style="${labelStyle}">Section Requested</label>
-        <input type="text" id="q3" data-label="Section Requested" style="${inputStyle}">
-      `;
-    } 
-    else if (category === 'Section_Change') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="sc_q1" data-label="Course ID" style="${inputStyle}">
-        <label style="${labelStyle}">Currently Registered Section</label>
-        <input type="text" id="sc_q2" data-label="Current Section" style="${inputStyle}">
-        <label style="${labelStyle}">Requested Section</label>
-        <input type="text" id="sc_q3" data-label="Requested Section" style="${inputStyle}">
-        <label style="${labelStyle}">Reasons for switching</label>
-        <textarea id="sc_q4" data-label="Reason for change" style="${inputStyle}"></textarea>
-      `;
-    }
-    else if (category === 'Diploma_Program') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Do you see your advisor in SIS?</label>
-        <select id="q1" data-label="Advisor appears in SIS?" style="${inputStyle}">
-          <option value="" selected disabled>Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-        <label style="${labelStyle}">Main Issue</label>
-        <select id="q2" data-label="Main Issue" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
-          <option value="">Select</option>
-          <option value="courses_equivalence">Course(s) equivalence</option>
-          <option value="advisor_not_shown">Don't have an advisor</option>
-          <option value="other_issue">Others</option>
-        </select>
-        <div id="diplomaExtra"></div>
-      `;
-    }
-    else if (category === 'Exam_Retake') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="er_q1" data-label="Course ID" style="${inputStyle}">
-        <label style="${labelStyle}">Filled Exam Retake Form?</label>
-        <select id="er_q2" data-label="Filled Exam Retake Form?" style="${inputStyle}">
-          <option value="">Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-        <label style="${labelStyle}">Submitted Excuse to Professor?</label>
-        <select id="er_q3" data-label="Submitted Excuse?" style="${inputStyle}">
-          <option value="">Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-        <label style="${labelStyle}">Briefly explain your excuse</label>
-        <input type="text" id="er_q4" data-label="Excuse Details" style="${inputStyle}">
-      `;
-    }
-    else if (category === 'Industrial_Training') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Select your main issue</label>
-        <select id="it_q1" data-label="Main Issue" style="${inputStyle}">
-          <option value="" disabled selected>Select an option</option>
-          <option value="training_grade">Need Industrial Training Grade</option>
-          <option value="no_training_place">Need place for Industrial Training</option>
-          <option value="other_issue">Others</option>
-        </select>
-      `;
-    }
-    else if (category === 'Senior_Project') {
-      container.innerHTML = `
-        <div style="margin-top:12px;">
-          <p style="font-weight:600; color:#0066bf;"> Kindly visit the Senior Project Coordinator. </p>
-          <p style="font-size:14px; color:#0066bf; margin:6px 0px 25px 0px; ">
-            If the Head of Department was your supervisor, kindly send her a message on Teams or visit her office after registration week.
-          </p>
-        </div>
-      `;
-    }
+  if (category === 'Diploma_Program') {
+    container.innerHTML = `
+      <label style="${labelStyle}">Do you see your advisor listed in SIS?</label>
+      <select data-label="Advisor in SIS?" style="${inputStyle}" id="advisorInSIS">
+        <option value="" disabled selected>Select</option>
+        <option>Yes</option>
+        <option>No</option>
+      </select>
+
+      <label style="${labelStyle}">What's your main issue?</label>
+      <select data-label="Main Issue" style="${inputStyle}" id="mainIssue" onchange="showDiplomaSubQuestions()">
+        <option value="" disabled selected>Select</option>
+        <option value="courses_equivalence">Course(s) equivalence</option>
+        <option value="advisor_not_shown">Don't have an advisor</option>
+        <option value="other_issue">Others</option>
+      </select>
+
+      <div id="diplomaExtra"></div>
+    `;
   }
+}
 
-  function showDiplomaSubQuestions() {
-    const issue = document.getElementById('q2').value;
-    const diplomaExtra = document.getElementById('diplomaExtra');
-    diplomaExtra.innerHTML = '';
-    const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
-    const inputStyle = 'width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
+function showDiplomaSubQuestions() {
+  const issue = document.getElementById('mainIssue').value;
+  const diplomaExtra = document.getElementById('diplomaExtra');
+  diplomaExtra.innerHTML = '';
+  const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
+  const inputStyle = 'width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
 
-    if (issue === 'courses_equivalence') {
-      courseCount = 1;
-      diplomaExtra.innerHTML = `
-        <div id="coursesContainer">
-          <label style="${labelStyle}">Course ID #${courseCount}</label>
-          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" style="${inputStyle}">
-          <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
-          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" style="${inputStyle}">
-        </div>
-        <button type="button" id="addCourseBtn" style="margin-top:10px; padding:8px 16px; background-color:#0066bf; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;"> + Add another course </button>
-      `;
-
-      document.getElementById('addCourseBtn').addEventListener('click', () => {
-        courseCount++;
-        const container = document.getElementById('coursesContainer');
-        const newFields = document.createElement('div');
-        newFields.innerHTML = `
-          <label style="${labelStyle}">Course ID #${courseCount}</label>
-          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" style="${inputStyle}">
-          <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
-          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" style="${inputStyle}">
-        `;
-        container.appendChild(newFields);
-      });
-    }
+  if (issue === 'courses_equivalence') {
+    diplomaExtra.innerHTML = `
+      <label style="${labelStyle}">Other Diploma Issue</label>
+      <textarea data-label="Other Diploma Issue" style="${inputStyle}" id="otherDiplomaIssue"></textarea>
+    `;
+  } else if (issue === 'advisor_not_shown' || issue === 'other_issue') {
+    diplomaExtra.innerHTML = `
+      <label style="${labelStyle}">Other Diploma Issue</label>
+      <textarea data-label="Other Diploma Issue" style="${inputStyle}" id="otherDiplomaIssue"></textarea>
+    `;
   }
+}
 
-  /* ===== FORM SUBMISSION ===== */
-  function collectFormData() {
-    const data = {
-      studentId: document.getElementById('studentId').value.trim(),
-      contact: document.getElementById('contact').value.trim(),
-      graduate: document.getElementById('graduate').value,
-      registered12: document.getElementById('registered12').value,
-      category: document.getElementById('category').value,
-      details: document.getElementById('details').value.trim(),
-      extra: {}
-    };
-    const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
-    extraInputs.forEach(el => {
-      data.extra[el.id] = el.value;
-    });
-    return data;
-  }
+// Collect form data using the human-readable data-label
+function collectFormData() {
+  const data = {
+    studentId: document.getElementById('studentId').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    graduate: document.getElementById('graduate').value,
+    registered12: document.getElementById('registered12').value,
+    category: document.getElementById('category').value,
+    details: document.getElementById('details').value.trim(),
+    extra: {}
+  };
+
+  const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
+  extraInputs.forEach(el => {
+    const label = el.getAttribute('data-label') || el.id; // Use data-label for key
+    data.extra[label] = el.value.trim();
+  });
+
+  return data;
+}
 
   document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
     e.preventDefault();
