@@ -24,7 +24,7 @@
       <!-- Contact number -->
       <label style="display:block; font-weight:600; margin-top:12px;">Student Contact Number</label>
       <input id="contact" name="contact" required
-             style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+             style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
 
       <!-- Graduate? -->
       <label style="display:block; font-weight:600; margin-top:12px;">Graduate Student?</label>
@@ -64,7 +64,7 @@
       <!-- Issue details -->
       <label style="display:block; font-weight:600; margin-top:12px;">Issue Details</label>
       <textarea id="details" name="details" rows="4"
-                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
+                style="width:100%;box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
                 placeholder="Describe your issue..."></textarea>
 
       <!-- Submit -->
@@ -88,7 +88,7 @@ function showFollowupQuestions() {
   container.innerHTML = '';
 
   const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
-  const inputStyle = 'width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
+  const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px;  margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
 
   if (category === 'Adding_Course') {
     container.innerHTML = `
