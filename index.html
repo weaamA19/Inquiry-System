@@ -202,43 +202,43 @@
     if (category === 'Adding_Course') {
       container.innerHTML = `
         <label style="${labelStyle}">Have you added the course to the waiting list?</label>
-        <select id="q1" data-label="Added to waiting list?" style="${inputStyle}">
+        <select id="q1" data-label="Added to waiting list?" required  style="${inputStyle}">
           <option value="" selected disabled>Select</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
         <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q2" data-label="Course ID" style="${inputStyle}">
+        <input type="text" id="q2" data-label="Course ID" required  style="${inputStyle}">
 
         <label style="${labelStyle}">Section Requested</label>
-        <input type="text" id="q3" data-label="Section Requested" style="${inputStyle}">
+        <input type="text" id="q3" data-label="Section Requested" required style="${inputStyle}">
       `;
     } else if (category === 'Section_Change') {
       container.innerHTML = `
         <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q1" data-label="Course ID" style="${inputStyle}">
+        <input type="text" id="q1" data-label="Course ID" required style="${inputStyle}">
 
         <label style="${labelStyle}">Current Section</label>
-        <input type="text" id="q2" data-label="Current Section" style="${inputStyle}">
+        <input type="text" id="q2" data-label="Current Section" required style="${inputStyle}">
 
         <label style="${labelStyle}">Requested Section</label>
-        <input type="text" id="q3" data-label="Requested Section" style="${inputStyle}">
+        <input type="text" id="q3" data-label="Requested Section" required style="${inputStyle}">
 
         <label style="${labelStyle}">Reason for Section Change</label>
-        <textarea id="q4" data-label="Reason for change" style="${inputStyle}"></textarea>
+        <textarea id="q4" data-label="Reason for change" required style="${inputStyle}"></textarea>
       `;
     } else if (category === 'Diploma_Program') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your advisor listed in SIS?</label>
-        <select id="q1" data-label="Advisor appears in SIS?" style="${inputStyle}">
+        <select id="q1" data-label="Advisor appears in SIS?" required style="${inputStyle}">
           <option value="" selected disabled>Select</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
         <label style="${labelStyle}">Main Issue</label>
-        <select id="q2" data-label="Main Issue" style="${inputStyle}" onchange="showDiplomaSubQuestions()">
+        <select id="q2" data-label="Main Issue" required style="${inputStyle}" onchange="showDiplomaSubQuestions()">
           <option value="">Select</option>
           <option value="courses_equivalence">Course(s) equivalence</option>
           <option value="advisor_not_shown">Don't have an advisor</option>
@@ -250,32 +250,32 @@
     } else if (category === 'Exam_Retake') {
       container.innerHTML = `
         <label style="${labelStyle}">Course ID for Exam Retake</label>
-        <input type="text" id="q1" data-label="Course ID" style="${inputStyle}">
+        <input type="text" id="q1" data-label="Course ID" required style="${inputStyle}">
 
         <label style="${labelStyle}">Have you filled the Exam Retake form?</label>
-        <select id="q2" data-label="Filled Exam Retake Form?" style="${inputStyle}">
+        <select id="q2" data-label="Filled Exam Retake Form?" required style="${inputStyle}">
           <option value="">Select</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
         <label style="${labelStyle}">Have you submitted your excuse to the professor?</label>
-        <select id="q3" data-label="Submitted Excuse?" style="${inputStyle}">
+        <select id="q3" data-label="Submitted Excuse?" required style="${inputStyle}">
           <option value="">Select</option>
           <option>Yes</option>
           <option>No</option>
         </select>
 
         <label style="${labelStyle}">Professor Name</label>
-        <input type="text" id="q4" data-label="Professor Name" style="${inputStyle}">
+        <input type="text" id="q4" data-label="Professor Name" required style="${inputStyle}">
 
         <label style="${labelStyle}">Briefly explain your excuse</label>
-        <input type="text" id="q5" data-label="Explain Excuse" style="${inputStyle}">
+        <input type="text" id="q5" data-label="Explain Excuse" required style="${inputStyle}">
       `;
     } else if (category === 'Industrial_Training') {
       container.innerHTML = `
         <label style="${labelStyle}">Main Issue</label>
-        <select id="q1" data-label="Main Issue" style="${inputStyle}">
+        <select id="q1" data-label="Main Issue" required style="${inputStyle}">
           <option value="" disabled selected>Select an option</option>
           <option value="training_grade">Need Industrial Training Grade</option>
           <option value="no_training_place">Need place for Industrial Training</option>
@@ -306,10 +306,10 @@
         <div id="coursesContainer">
           <label style="${labelStyle}">Course ID #${courseCount}</label>
           <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" 
-            style="${inputStyle}">
+           required style="${inputStyle}">
           <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
           <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" 
-            style="${inputStyle}">
+            required style="${inputStyle}">
         </div>
         <button type="button" id="addCourseBtn" 
           style="margin-top:10px; padding:8px 16px; background-color:#0066bf; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
@@ -322,9 +322,10 @@
         const newFields = document.createElement('div');
         newFields.innerHTML = `
           <label style="${labelStyle}">Course ID #${courseCount}</label>
-          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" style="${inputStyle}">
+          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" required  style="${inputStyle}">
           <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
-          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" style="${inputStyle}">
+          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" required style="${inputStyle}">
+          <button type="button" onclick="this.parentElement.remove()" style="margin-top:8px; background:#ff4d4d; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer;">Remove</button>
         `;
         container.appendChild(newFields);
       });
