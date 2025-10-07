@@ -152,20 +152,23 @@
   /* ===== FOLLOW-UP LOGIC ===== */
   async function checkStatus() {
     const id = document.getElementById('followId').value.trim();
-    const resultDiv = document.getElementById('followupResult');
-    resultDiv.innerHTML = '';
+    const followup_response_container = document.getElementById('followupResult');
+    followup_response_container.innerHTML = '';
 
     if (!id) {
-      resultDiv.innerHTML = '<p style="color:red;">Please enter your Student ID.</p>';
+      followup_response_container.innerHTML = '<p style="color:red;">Please enter your Student ID.</p>';
       return;
     }
+
+  // Show loading indicator
+  followup_response_container.innerHTML = '<p style="color:#0066bf; font-weight:600;">Fetching data, please wait...</p>';
 
     try {
       const res = await fetch(followupURL + "?id=" + encodeURIComponent(id));
       const data = await res.json();
 
       if (!data || data.length === 0) {
-        resultDiv.innerHTML = '<p>No inquiries found for this ID.</p>';
+        followup_response_container.innerHTML = '<p>No inquiries found for this ID.</p>';
         return;
       }
 
@@ -175,15 +178,15 @@
           <div style="border:1px solid #ccc; border-radius:6px; padding:10px; margin-top:10px;">
             <p><strong>Inquiry #${i + 1}</strong></p>
             <p><strong>Category:</strong> ${d.category}</p>
-            <p><strong>Status:</strong> <span style="color:${d.status === 'Pending' ? 'orange' : 'green'}">${d.status}</span></p>
+            <p><strong>Request Status:</strong> <span style="color:${d.status === 'Pending' ? 'orange' : 'green'}">${d.status}</span></p>
           </div>
         `;
       });
-      resultDiv.innerHTML = html;
+      followup_response_container.innerHTML = html;
 
     } catch (err) {
       console.error(err);
-      resultDiv.innerHTML = '<p style="color:red;">Error fetching data. Please try again later.</p>';
+      followup_response_container.innerHTML = '<p style="color:red;">Error fetching data. Please try again later.</p>';
     }
   }
 
