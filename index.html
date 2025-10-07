@@ -124,7 +124,7 @@
 
   <script>
   const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
-  const followupURL = "https://script.google.com/macros/s/AKfycbzaF65IUhTpBh7fYfUhhDiq80UwAmgHAYk3Q75rgZZmeaQlUDDUArcZYWhrossX_X49/exec";
+  const followupURL = "https://script.google.com/macros/s/AKfycbzpi4GsGnWgEanmaWTxBdQ8JmIU7sQkznYHgq4WtsRLMnLavAipc4-coXpI8Q5piso/exec";
 
   /* ===== MENU SWITCHING ===== */
   function showSection(section) {
@@ -175,7 +175,6 @@
           <div style="border:1px solid #ccc; border-radius:6px; padding:10px; margin-top:10px;">
             <p><strong>Inquiry #${i + 1}</strong></p>
             <p><strong>Category:</strong> ${d.category}</p>
-            <p><strong>Details:</strong> ${d.details}</p>
             <p><strong>Status:</strong> <span style="color:${d.status === 'Pending' ? 'orange' : 'green'}">${d.status}</span></p>
           </div>
         `;
@@ -325,7 +324,7 @@
           <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" required  style="${inputStyle}">
           <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
           <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" required style="${inputStyle}">
-          <button type="button" onclick="this.parentElement.remove()" style="margin-top:8px; background:#ff4d4d; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer;">Remove</button>
+          <button type="button" onclick="this.parentElement.remove()" style="margin-top:8px; background:#ff4d4d; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer;">Remove Course ID #${courseCount}</button>
         `;
         container.appendChild(newFields);
       });
