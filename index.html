@@ -10,14 +10,25 @@
   <!-- ===== Navigation Bar ===== -->
 <nav style="display:flex; justify-content:center; gap:20px; padding:18px; background:#fff; border-bottom:1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
   <button 
-    onclick="showSection('submit')" 
+    onclick="setActiveButton('submitBtn'); showSection('submit');" 
     id="submitBtn"
     style="background:#0066bf; color:#fff; border:none; padding:12px 22px; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.25s ease; box-shadow:0 2px 4px rgba(0,0,0,0.1);"
-    onmouseover="this.style.background='#005bb0'; this.style.transform='translateY(-2px)';"
-    onmouseout="this.style.background='#0066bf'; this.style.transform='translateY(0)';"
+    onmouseover="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#e0e0e0';}"
+    onmouseout="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#f4f4f4';}"
   >
     Submit Inquiry
   </button>
+
+  <button 
+    onclick="setActiveButton('followBtn'); showSection('followup');" 
+    id="followBtn"
+    style="background:#f4f4f4; color:#333; border:none; padding:12px 22px; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.25s ease; box-shadow:0 2px 4px rgba(0,0,0,0.08);"
+    onmouseover="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#e0e0e0';}"
+    onmouseout="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#f4f4f4';}"
+  >
+    Follow Up Inquiry
+  </button>
+</nav>
 
   <button 
     onclick="showSection('followup')" 
@@ -135,6 +146,24 @@
   </main>
 
   <script>
+
+  function setActiveButton(activeId) {
+    const submitBtn = document.getElementById('submitBtn');
+    const followBtn = document.getElementById('followBtn');
+  
+    // Reset both buttons
+    submitBtn.style.background = '#f4f4f4';
+    submitBtn.style.color = '#333';
+  
+    followBtn.style.background = '#f4f4f4';
+    followBtn.style.color = '#333';
+  
+    // Highlight active button
+    const activeBtn = document.getElementById(activeId);
+    activeBtn.style.background = '#0066bf';
+    activeBtn.style.color = '#fff';
+  }
+
   const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
   const followupURL = "https://script.google.com/macros/s/AKfycbzpi4GsGnWgEanmaWTxBdQ8JmIU7sQkznYHgq4WtsRLMnLavAipc4-coXpI8Q5piso/exec";
 
