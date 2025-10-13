@@ -371,6 +371,9 @@ function handleNEMinorChange(labelStyle, inputStyle) {
   const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
 
   if (!minorSelect || !minorExtra || !submitBtn) return;
+  
+  const newSelect = minorSelect.cloneNode(true);
+  minorSelect.parentNode.replaceChild(newSelect, minorSelect);
 
   minorSelect.addEventListener('change', function () {
     if (this.value === 'yes') {
