@@ -385,7 +385,7 @@ function handleNEMinorChange(labelStyle, inputStyle) {
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
-    } else (this.value === 'no') {
+    } else if (this.value === 'no') {
       toggleIssueDetails(false);
       minorExtra.innerHTML = `
         <p style="color:#d32f2f; font-weight:600;">
