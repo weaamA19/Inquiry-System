@@ -414,18 +414,15 @@ function handleExamFormChange(labelStyle, inputStyle) {
 
   examFormStatus.addEventListener('change', function () {
     if (this.value === 'yes') {
-      toggleIssueDetails(true);
       examExtraFields.innerHTML = `
         <p style="color:#d32f2f; font-weight:600;">
           Please contact the Head of Department via Email if you haven't received approval yet.
         </p>
       `;
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
       submitBtn.disabled = true;
+      submitBtn.style.background = '#aaa';
+      submitBtn.style.color = '#666';
     } else if (this.value === 'no') {
-      toggleIssueDetails(false);
       examExtraFields.innerHTML = `
         <label style="${labelStyle}">Course ID for Exam Retake</label>
         <input type="text" id="q2" data-label="Course ID" required style="${inputStyle}">
@@ -442,9 +439,10 @@ function handleExamFormChange(labelStyle, inputStyle) {
         <label style="${labelStyle}">Briefly explain your excuse</label>
         <input type="text" id="q6" data-label="Explain Excuse" required style="${inputStyle}">
       `;
+      submitBtn.disabled = false;
+      submitBtn.style.background = '#0066bf';
+      submitBtn.style.color = '#fff';
       submitBtn.disabled = true;
-      submitBtn.style.background = '#aaa';
-      submitBtn.style.color = '#666';
     } else {
       minorExtra.innerHTML = '';
       submitBtn.disabled = false;
