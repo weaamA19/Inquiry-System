@@ -100,7 +100,7 @@
           <option value="Section_Change">Change Section</option>
           <option value="Diploma_Program">Associate Diploma Program</option>
           <option value="Exam_Retake">Exam Retake</option>
-          <option value="Industrial_Training">Industrial Training Grade</option>
+          <option value="Industrial_Training">Industrial Training</option>
           <option value="Senior_Project">Senior Project</option>
           <option value="NE_Minor">NE Minor Declaration</option>
           <option value="Others">Other Inquiries</option>
@@ -348,6 +348,7 @@
           <option value="other_issue">Others</option>
         </select>
       `;
+      showOthersForIndustrialTraining(labelStyle, inputStyle);
     } else if (category === 'Senior_Project') {
       container.innerHTML = `
         <div style="margin-top:12px;">
@@ -383,7 +384,7 @@ function handleNEMinorChange(labelStyle, inputStyle) {
   minorSelect.addEventListener('change', function () {
     if (this.value === 'yes') {
       toggleIssueDetails(true);
-      minorExtra.innerHTML = ''; // Clear previous "no" message
+      minorExtra.innerHTML = '';
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
@@ -508,11 +509,22 @@ function showDiplomaSubQuestions() {
 }
 
 
-function showIndustrialSubQuestions() {
-  const issue = document.getElementById('q1').value;
-  toggleIssueDetails(issue === 'other_issue');
-}
-
+  function showOthersForIndustrialTraining(labelStyle, inputStyle) {
+    const issueDetails = document.getElementById('q1').value;
+            <option value="other_issue">Others</option>
+  
+    minorSelect.addEventListener('change', function () {
+      if (this.value === 'other_issue') {
+        toggleIssueDetails(true);
+      } else {
+        toggleIssueDetails(false);
+        minorExtra.innerHTML = ``;
+        submitBtn.disabled = true;
+        submitBtn.style.background = '#aaa';
+        submitBtn.style.color = '#666';
+      }
+    });
+  }
 
 function collectFormData() {
   const data = {
