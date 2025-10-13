@@ -296,7 +296,7 @@
         <input type="text" id="q3" data-label="Requested Section" required style="${inputStyle}">
 
         <label style="${labelStyle}">Reason for Section Change</label>
-         <select id="q4" data-label="Reason for section change" required style="${inputStyle}">
+         <select id="q4" data-label="Reason for section change:" required style="${inputStyle}">
           <option value="" selected disabled>Select</option>
           <option value="addCourse">Need to Register Another Course</option>
           <option value="longBreak">Break of 6 hours or more</option>
@@ -304,6 +304,7 @@
 
         <div id="OtherCourseDetails"></div>
       `;
+      handleSectionChangeReason(labelStyle, inputStyle);
     } else if (category === 'Diploma_Program') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your advisor listed in SIS?</label>
@@ -424,13 +425,13 @@ function handleExamFormChange(labelStyle, inputStyle) {
       submitBtn.style.color = '#666';
     } else if (this.value === 'no') {
       examExtraFields.innerHTML = `
-        <label style="${labelStyle}">Course ID for Exam Retake</label>
+        <label style="${labelStyle}">Course ID</label>
         <input type="text" id="q2" data-label="Course ID" required style="${inputStyle}">
 
         <label style="${labelStyle}">Section Number</label>
         <input type="text" id="q3" data-label="Section Number" required style="${inputStyle}">
 
-        <label style="${labelStyle}">Exam Date</label>
+        <label style="${labelStyle}">Course Exam Date</label>
         <input type="text" id="q4" data-label="Exam Date" required style="${inputStyle}">
 
         <label style="${labelStyle}">Instructor Name</label>
@@ -451,7 +452,6 @@ function handleExamFormChange(labelStyle, inputStyle) {
     }
   });
 }
-
 
     function handleSectionChangeReason(labelStyle, inputStyle) {
       const reasonSelect = document.getElementById('q4');
