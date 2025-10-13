@@ -58,6 +58,11 @@
     <!-- === Submit Form Section === -->
     <div id="submitSection">
       <form id="inquiryForm" style="background:#fff; max-width:900px; margin:0 auto; padding:22px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+        <!-- Student Name -->
+        <label style="display:block; font-weight:600; margin-top:12px;">Student Name</label>
+        <input id="studentName" name="studentName" required
+             style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+
         <!-- Student ID -->
         <label style="display:block; font-weight:600; margin-top:12px;">Student University ID</label>
         <input id="studentId" name="studentId" required
@@ -93,10 +98,11 @@
           <option value="">Select</option>
           <option value="Adding_Course">Adding Course(s)</option>
           <option value="Section_Change">Change Section</option>
-          <option value="Diploma_Program">Diploma Program</option>
+          <option value="Diploma_Program">Associate Diploma Program</option>
           <option value="Exam_Retake">Exam Retake</option>
           <option value="Industrial_Training">Industrial Training Grade</option>
           <option value="Senior_Project">Senior Project</option>
+          <option value="NE_Minor">Network Engineering Minor </option>
           <option value="Others">Other Inquiries</option>
         </select>
 
@@ -104,10 +110,12 @@
         <div id="extraQuestions" style="margin-top:14px;"></div>
 
         <!-- Issue details -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Issue Details</label>
-        <textarea id="details" name="details" rows="4"
-                  style="width:100%;box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
-                  placeholder="Describe your issue..."></textarea>
+        <div id="issueDetailContainer" style="display:none;">
+          <label style="display:block; font-weight:600; margin-top:12px;">Issue Details</label>
+          <textarea id="details" name="details" rows="4"
+                    style="width:100%;box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
+                    placeholder="Describe your issue..."></textarea>
+        </div>
 
         <!-- Submit -->
         <button type="submit"
@@ -155,7 +163,7 @@
   const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
   const followupURL = "https://script.google.com/macros/s/AKfycbxX2XkjWrsYRfkKQBotb69wp58nws3SstOL7mvwwrBfG2QIp67tCe36ZbUuQV0qzdza/exec";
 
-  /* ===== MENU SWITCHING ===== */
+  /* ===== Switching Form ===== */
   function showSection(section) {
     const submit = document.getElementById('submitSection');
     const follow = document.getElementById('followupSection');
@@ -178,7 +186,7 @@
     }
   }
 
-  /* ===== FOLLOW-UP LOGIC ===== */
+  // ===== Submit Follow-up Request =====
   async function checkStatus() {
     const id = document.getElementById('followId').value.trim();
     const followup_response_container = document.getElementById('followupResult');
@@ -219,14 +227,23 @@
     }
   }
 
-  /* ===== FOLLOW-UP QUESTIONS LOGIC ===== */
+  // ===== FOLLOW-UP QUESTIONS LOGIC =====
   let courseCount = 1;
+
+  // ===== Handel "Issue Details" Visibility =====
+  function toggleIssueDetails(show) {
+    const issueContainer = document.getElementById('issueDetailContainer');
+    issueContainer.style.display = show ? 'block' : 'none';
+  }
 
   function showFollowupQuestions() {
     const category = document.getElementById('category').value;
     const container = document.getElementById('extraQuestions');
     container.innerHTML = '';
 
+    // Hide Issue Details initially
+    toggleIssueDetails(false);
+    
     const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
     const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
 
@@ -257,7 +274,13 @@
         <input type="text" id="q3" data-label="Requested Section" required style="${inputStyle}">
 
         <label style="${labelStyle}">Reason for Section Change</label>
-        <textarea id="q4" data-label="Reason for change" required style="${inputStyle}"></textarea>
+         <select id="q4" data-label="Reason for section change" required style="${inputStyle}">
+          <option value="" selected disabled>Select</option>
+          <option value="addCourse">Need to Register Another Course</option>
+          <option value="longBreak">Break of 6 hours or more</option>
+        </select>
+
+        <div id="OtherCourseDetails"></div>
       `;
     } else if (category === 'Diploma_Program') {
       container.innerHTML = `
@@ -273,6 +296,7 @@
           <option value="">Select</option>
           <option value="courses_equivalence">Course(s) equivalence</option>
           <option value="advisor_not_shown">Don't have an advisor</option>
+          <option value="advisor_not_shown">Need the "Associate Diploma in Information Technology" Program</option>
           <option value="other_issue">Others</option>
         </select>
 
@@ -280,28 +304,14 @@
       `;
     } else if (category === 'Exam_Retake') {
       container.innerHTML = `
-        <label style="${labelStyle}">Course ID for Exam Retake</label>
-        <input type="text" id="q1" data-label="Course ID" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Have you filled the Exam Retake form?</label>
-        <select id="q2" data-label="Filled Exam Retake Form?" required style="${inputStyle}">
+        <label style="${labelStyle}">Have you filled the "Final Exam Absence" form?</label>
+        <select id="q1" data-label="Filled Exam Retake Form?" required style="${inputStyle}">
           <option value="">Select</option>
-          <option>Yes</option>
-          <option>No</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
         </select>
-
-        <label style="${labelStyle}">Have you submitted your excuse to the professor?</label>
-        <select id="q3" data-label="Submitted Excuse?" required style="${inputStyle}">
-          <option value="">Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-
-        <label style="${labelStyle}">Professor Name</label>
-        <input type="text" id="q4" data-label="Professor Name" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Briefly explain your excuse</label>
-        <input type="text" id="q5" data-label="Explain Excuse" required style="${inputStyle}">
+       
+       <div id="ExamAbsenceFormNotFilled" style="margin-top:10px;"></div>
       `;
     } else if (category === 'Industrial_Training') {
       container.innerHTML = `
@@ -310,6 +320,7 @@
           <option value="" disabled selected>Select an option</option>
           <option value="training_grade">Need Industrial Training Grade</option>
           <option value="no_training_place">Need place for Industrial Training</option>
+          <option value="need_letter">Need Industrial Training Letter</option>
           <option value="other_issue">Others</option>
         </select>
       `;
@@ -318,55 +329,150 @@
         <div style="margin-top:12px;">
           <p style="font-weight:600; color:#0066bf;">Kindly visit the Senior Project Coordinator.</p>
           <p style="font-size:14px; color:#0066bf; margin:6px 0 25px 0;">
-            If the Head of Department was your supervisor, send a message on Teams or visit her office after registration week.
+            If the Head of Department was your supervisor, send an email or visit the department after registration week.
           </p>
         </div>
       `;
-    }
-  }
-
-  function showDiplomaSubQuestions() {
-    const issue = document.getElementById('q2').value;
-    const diplomaExtra = document.getElementById('diplomaExtra');
-    const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
-    const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
-
-    if (issue === 'courses_equivalence') {
-      courseCount = 1;
-      diplomaExtra.innerHTML = `
-        <div id="coursesContainer">
-          <label style="${labelStyle}">Course ID #${courseCount}</label>
-          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" 
-           required style="${inputStyle}">
-          <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
-          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" 
-            required style="${inputStyle}">
-        </div>
-        <button type="button" id="addCourseBtn" 
-          style="margin-top:10px; padding:8px 16px; background-color:#0066bf; color:white; border:none; border-radius:6px; cursor:pointer; font-weight:600;">
-          + Add another course
-        </button>
+        } else if (category === 'NE_Minor') {
+      container.innerHTML = `
+        <label style="${labelStyle}">Is your minor Declared?</label>
+        <select id="q1_NE_Minor" data-label="NE Declared?" required style="${inputStyle}">
+          <option value="" disabled selected>Select an option</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+        <div id="minorExtra" style="margin-top:12px;"></div>
       `;
-      document.getElementById('addCourseBtn').addEventListener('click', () => {
-        courseCount++;
-        const container = document.getElementById('coursesContainer');
-        const newFields = document.createElement('div');
-        newFields.innerHTML = `
-          <label style="${labelStyle}">Course ID #${courseCount}</label>
-          <input type="text" id="eq1_${courseCount}" data-label="Course ID #${courseCount}" required  style="${inputStyle}">
-          <label style="${labelStyle}">Equivalent Course ID #${courseCount}</label>
-          <input type="text" id="eq2_${courseCount}" data-label="Equivalent Course ID #${courseCount}" required style="${inputStyle}">
-          <button type="button" onclick="this.parentElement.remove()" style="margin-top:8px; background:#ff4d4d; color:white; border:none; padding:6px 10px; border-radius:6px; cursor:pointer;">Remove Course ID #${courseCount}</button>
-        `;
-        container.appendChild(newFields);
-      });
-    } else {
-      diplomaExtra.innerHTML = '';
+        } else if (category === 'Others') {
+            toggleIssueDetails(true);
     }
   }
+
+function handleNEMinorChange() {
+  const minorSelect = document.getElementById('q1_NE_Minor');
+  const minorExtra = document.getElementById('minorExtra');
+
+  if (!minorSelect || !minorExtra) return;
+
+  minorSelect.addEventListener('change', function () {
+    if (this.value === 'yes') {
+      toggleIssueDetails(true);
+      minorExtra.innerHTML = '';
+    } else if (this.value === 'no') {
+      toggleIssueDetails(false);
+      minorExtra.innerHTML = `
+        <p style="color:#d32f2f; font-weight:600;">
+          Please submit a minor declaration request through SIS.
+        </p>
+      `;
+    } else {
+      toggleIssueDetails(false);
+      minorExtra.innerHTML = '';
+    }
+  });
+}
+
+function handleExamFormChange(labelStyle, inputStyle) {
+  const examFormStatus = document.getElementById('q1');
+  const examExtraFields = document.getElementById('ExamAbsenceFormNotFilled');
+  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
+
+  if (!examFormStatus || !examExtraFields || !submitBtn) return;
+
+  examFormStatus.addEventListener('change', function () {
+    if (this.value === 'yes') {
+      // Show message and disable submit
+      examExtraFields.innerHTML = `
+        <p style="color:#d32f2f; font-weight:600;">
+          Please contact the Head of Department via Email if you haven't received approval yet.
+        </p>
+      `;
+      submitBtn.disabled = true;
+    } else if (this.value === 'no') {
+      examExtraFields.innerHTML = `
+        <label style="${labelStyle}">Course ID for Exam Retake</label>
+        <input type="text" id="q2" data-label="Course ID" required style="${inputStyle}">
+
+        <label style="${labelStyle}">Section Number</label>
+        <input type="text" id="q3" data-label="Section Number" required style="${inputStyle}">
+
+        <label style="${labelStyle}">Exam Date</label>
+        <input type="text" id="q4" data-label="Exam Date" required style="${inputStyle}">
+
+        <label style="${labelStyle}">Instructor Name</label>
+        <input type="text" id="q5" data-label="Instructor Name" required style="${inputStyle}">
+
+        <label style="${labelStyle}">Briefly explain your excuse</label>
+        <input type="text" id="q6" data-label="Explain Excuse" required style="${inputStyle}">
+      `;
+      submitBtn.disabled = false;
+    } else {
+      examExtraFields.innerHTML = '';
+      submitBtn.disabled = false;
+    }
+  });
+}
+
+
+    function handleSectionChangeReason(labelStyle, inputStyle) {
+      const reasonSelect = document.getElementById('q4');
+      const extraFields = document.getElementById('OtherCourseDetails');
+    
+      if (!reasonSelect || !extraFields) return;
+    
+      reasonSelect.addEventListener('change', function () {
+        if (this.value === 'addCourse') {
+          extraFields.innerHTML = `
+            <label style="${labelStyle}">Enter the Course ID you plan to add</label>
+            <input type="text" id="q5" data-label="Other Course ID" required style="${inputStyle}">
+    
+            <label style="${labelStyle}">Enter the section number of the other course</label>
+            <input type="text" id="q6" data-label="Other Course Section Number" required style="${inputStyle}">
+          `;
+        } else {
+          extraFields.innerHTML = '';
+        }
+      });
+    }
+
+function showDiplomaSubQuestions() {
+  const issue = document.getElementById('q2').value;
+  const diplomaExtra = document.getElementById('diplomaExtra');
+  const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
+  const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
+
+  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
+  toggleIssueDetails(false);
+
+  if (issue === 'courses_equivalence') {
+    diplomaExtra.innerHTML = `
+      <p style="color:#d32f2f; font-weight:600;">
+        Visit your Academic Advisor and request them to send a letter to the Head of Department with the courses that are equivalent.
+      </p>
+    `;
+    if (submitBtn) submitBtn.disabled = true;
+  } 
+  else if (issue === 'other_issue') {
+    toggleIssueDetails(true);
+    diplomaExtra.innerHTML = '';
+    if (submitBtn) submitBtn.disabled = false;
+  } 
+  else {
+    diplomaExtra.innerHTML = '';
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+
+function showIndustrialSubQuestions() {
+  const issue = document.getElementById('q1').value;
+  toggleIssueDetails(issue === 'other_issue');
+}
+
 
 function collectFormData() {
   const data = {
+    studentName:document.getElementById('studentName').value.trim(),
     studentId: document.getElementById('studentId').value.trim(),
     contact: document.getElementById('contact').value.trim(),
     graduate: document.getElementById('graduate').value,
