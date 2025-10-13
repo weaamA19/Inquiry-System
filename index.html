@@ -375,6 +375,7 @@ function handleNEMinorChange(labelStyle, inputStyle) {
   minorSelect.addEventListener('change', function () {
     if (this.value === 'yes') {
       toggleIssueDetails(true);
+      minorExtra.innerHTML = ''; // Clear previous "no" message
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
