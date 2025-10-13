@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     try {
       const payload = req.body;
 
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbzJvSXdrK3EMqCJVoHanM9ChIumodm3nRwHCaxHVEVBER11kbm57v7ZdKvnR5_67Ues/exec';
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbxzk5VNn7PXYrolpR04LV4FIoO1kstORcUOCdzrsfkpgIVkOTRQqZYrXnL24XZjKj6O/exec';
 
       const response = await fetch(scriptURL, {
         method: 'POST',
