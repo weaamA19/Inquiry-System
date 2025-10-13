@@ -509,22 +509,22 @@ function showDiplomaSubQuestions() {
 }
 
 
-  function showOthersForIndustrialTraining(labelStyle, inputStyle) {
-    const issueDetails = document.getElementById('q1').value;
-            <option value="other_issue">Others</option>
-  
-    minorSelect.addEventListener('change', function () {
-      if (this.value === 'other_issue') {
-        toggleIssueDetails(true);
-      } else {
-        toggleIssueDetails(false);
-        minorExtra.innerHTML = ``;
-        submitBtn.disabled = true;
-        submitBtn.style.background = '#aaa';
-        submitBtn.style.color = '#666';
-      }
-    });
-  }
+function showOthersForIndustrialTraining(labelStyle, inputStyle) {
+  const issueDetails = document.getElementById('q1').value;
+          <option value="other_issue">Others</option>
+
+  minorSelect.addEventListener('change', function () {
+    if (this.value === 'other_issue') {
+      toggleIssueDetails(true);
+    } else {
+      toggleIssueDetails(false);
+      minorExtra.innerHTML = ``;
+      submitBtn.disabled = true;
+      submitBtn.style.background = '#aaa';
+      submitBtn.style.color = '#666';
+    }
+  });
+}
 
 function collectFormData() {
   const data = {
