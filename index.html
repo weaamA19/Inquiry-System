@@ -342,9 +342,9 @@
         <label style="${labelStyle}">Main Issue</label>
         <select id="q1" data-label="Main Issue" required style="${inputStyle}">
           <option value="" selected disabled>Select</option>
-          <option value="training_grade">Need Industrial Training Grade</option>
-          <option value="no_training_place">Need place for Industrial Training</option>
-          <option value="need_letter">Need Industrial Training Letter</option>
+          <option value="need_training_grade">Need Industrial Training Grade</option>
+          <option value="loocking_for_training_place">Need place for Industrial Training</option>
+          <option value="need_training_letter">Need Industrial Training Letter</option>
           <option value="other_issue">Others</option>
         </select>
       `;
@@ -358,6 +358,7 @@
           </p>
         </div>
       `;
+      toggleIssueDetails(true);
         } else if (category === 'NE_Minor') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your minor Declared?</label>
