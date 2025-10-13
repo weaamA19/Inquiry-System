@@ -510,13 +510,12 @@ function showDiplomaSubQuestions() {
 
 
 function showOthersForIndustrialTraining(labelStyle, inputStyle) {
-  const issueDetails = document.getElementById('q1').value;
-  minorSelect.addEventListener('change', function () {
+  const issueDetails = document.getElementById('q1');
+  issueDetails.addEventListener('change', function () {
     if (this.value === 'other_issue') {
       toggleIssueDetails(true);
     } else {
       toggleIssueDetails(false);
-      minorExtra.innerHTML = ``;
     }
   });
 }
