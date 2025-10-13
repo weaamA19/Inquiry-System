@@ -214,6 +214,7 @@
         html += `
           <div style="border:1px solid #ccc; border-radius:6px; padding:10px; margin-top:10px;">
             <p><strong>Inquiry #${i + 1}</strong></p>
+            <p><strong>Inquiry Submitted Date:</strong> ${d.timestamp}</p>
             <p><strong>Category:</strong> ${d.category}</p>
             <p><strong>Request Status:</strong> <span style="color:${d.status === 'Pending' ? 'orange' : 'green'}">${d.status}</span></p>
           </div>
