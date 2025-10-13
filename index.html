@@ -368,31 +368,31 @@
 function handleNEMinorChange(labelStyle, inputStyle) {
   const minorSelect = document.getElementById('q1');
   const minorExtra = document.getElementById('minorExtra');
+  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
 
-  if (!minorSelect || !minorExtra) return; // Safety check
+  if (!minorSelect || !minorExtra || !submitBtn) return;
 
   minorSelect.addEventListener('change', function () {
     if (this.value === 'yes') {
-      // Show Issue Details
-      if (typeof toggleIssueDetails === 'function') {
-        toggleIssueDetails(true);
-      } else {
-        minorExtra.innerHTML = `
-          <label style="${labelStyle}">Issue Details</label>
-          <textarea id="details" name="details" rows="4"
-            style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
-            placeholder="Describe your issue..."></textarea>
-        `;
-      }
+      toggleIssueDetails(true);
+      submitBtn.disabled = false;
+      submitBtn.style.background = '#0066bf';
+      submitBtn.style.color = '#fff';
     } else if (this.value === 'no') {
-      // Show instruction to submit minor declaration
+      toggleIssueDetails(false);
       minorExtra.innerHTML = `
         <p style="color:#d32f2f; font-weight:600;">
           Please submit a minor declaration through SIS.
         </p>
       `;
+      submitBtn.disabled = true;
+      submitBtn.style.background = '#aaa';
+      submitBtn.style.color = '#666';
     } else {
       minorExtra.innerHTML = '';
+      submitBtn.disabled = false;
+      submitBtn.style.background = '#0066bf';
+      submitBtn.style.color = '#fff';
     }
   });
 }
