@@ -312,7 +312,7 @@
           <option value="">Select</option>
           <option value="courses_equivalence">Course(s) equivalence</option>
           <option value="advisor_not_shown">Don't have an advisor</option>
-          <option value="advisor_not_shown">Need the "Associate Diploma in Information Technology" Program</option>
+          <option value="Need_AD_Program">Need the "Associate Diploma in Information Technology" Program</option>
           <option value="other_issue">Others</option>
         </select>
 
@@ -352,7 +352,7 @@
         } else if (category === 'NE_Minor') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your minor Declared?</label>
-        <select id="q1_NE_Minor" data-label="NE Declared?" required style="${inputStyle}">
+        <select id="q1" data-label="NE Declared?" required style="${inputStyle}">
           <option value="" disabled selected>Select an option</option>
           <option value="yes">Yes</option>
           <option value="no">No</option>
@@ -364,25 +364,33 @@
     }
   }
 
-function handleNEMinorChange() {
-  const minorSelect = document.getElementById('q1_NE_Minor');
+function handleNEMinorChange(labelStyle, inputStyle) {
+  const minorSelect = document.getElementById('q1');
   const minorExtra = document.getElementById('minorExtra');
 
-  if (!minorSelect || !minorExtra) return;
+  if (!minorSelect || !minorExtra) return; // Safety check
 
   minorSelect.addEventListener('change', function () {
     if (this.value === 'yes') {
-      toggleIssueDetails(true);
-      minorExtra.innerHTML = '';
+      // Show Issue Details
+      if (typeof toggleIssueDetails === 'function') {
+        toggleIssueDetails(true);
+      } else {
+        minorExtra.innerHTML = `
+          <label style="${labelStyle}">Issue Details</label>
+          <textarea id="details" name="details" rows="4"
+            style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
+            placeholder="Describe your issue..."></textarea>
+        `;
+      }
     } else if (this.value === 'no') {
-      toggleIssueDetails(false);
+      // Show instruction to submit minor declaration
       minorExtra.innerHTML = `
         <p style="color:#d32f2f; font-weight:600;">
-          Please submit a minor declaration request through SIS.
+          Please submit a minor declaration through SIS.
         </p>
       `;
     } else {
-      toggleIssueDetails(false);
       minorExtra.innerHTML = '';
     }
   });
