@@ -298,7 +298,7 @@
         <label style="${labelStyle}">Reason for Section Change</label>
          <select id="q4" data-label="Reason for section change:" required style="${inputStyle}">
           <option value="" selected disabled>Select</option>
-          <option value="addCourse">Need to Register Another Course</option>
+          <option value="addAnotherCourse">Need to Register Another Course</option>
           <option value="longBreak">Break of 6 hours or more</option>
         </select>
 
@@ -445,7 +445,7 @@ function handleExamFormChange(labelStyle, inputStyle) {
       submitBtn.style.color = '#fff';
       submitBtn.disabled = true;
     } else {
-      minorExtra.innerHTML = '';
+      examExtraFields.innerHTML = '';
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
@@ -460,13 +460,13 @@ function handleExamFormChange(labelStyle, inputStyle) {
       if (!reasonSelect || !extraFields) return;
     
       reasonSelect.addEventListener('change', function () {
-        if (this.value === 'addCourse') {
+        if (this.value === 'addAnotherCourse') {
           extraFields.innerHTML = `
-            <label style="${labelStyle}">Enter the Course ID you plan to add</label>
+            <label style="${labelStyle}">Enter the other Course ID </label>
             <input type="text" id="q5" data-label="Other Course ID" required style="${inputStyle}">
     
-            <label style="${labelStyle}">Enter the section number of the other course</label>
-            <input type="text" id="q6" data-label="Other Course Section Number" required style="${inputStyle}">
+            <label style="${labelStyle}">Enter the section number of that course</label>
+            <input type="text" id="q6" data-label="Other Course Section" required style="${inputStyle}">
           `;
         } else {
           extraFields.innerHTML = '';
@@ -489,16 +489,21 @@ function showDiplomaSubQuestions() {
         Visit your Academic Advisor and request them to send a letter to the Head of Department with the courses that are equivalent.
       </p>
     `;
-    if (submitBtn) submitBtn.disabled = true;
+      submitBtn.disabled = true;
+      submitBtn.style.background = '#aaa';
+      submitBtn.style.color = '#666';
   } 
   else if (issue === 'other_issue') {
     toggleIssueDetails(true);
     diplomaExtra.innerHTML = '';
-    if (submitBtn) submitBtn.disabled = false;
-  } 
+    submitBtn.disabled = false;
+    submitBtn.style.background = '#0066bf';
+    submitBtn.style.color = '#fff';  } 
   else {
-    diplomaExtra.innerHTML = '';
-    if (submitBtn) submitBtn.disabled = false;
+      diplomaExtra.innerHTML = '';
+      submitBtn.disabled = false;
+      submitBtn.style.background = '#0066bf';
+      submitBtn.style.color = '#fff';
   }
 }
 
