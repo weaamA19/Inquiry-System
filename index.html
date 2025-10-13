@@ -335,11 +335,12 @@
        
        <div id="ExamAbsenceFormNotFilled" style="margin-top:10px;"></div>
       `;
+      handleExamFormChange(labelStyle, inputStyle);
     } else if (category === 'Industrial_Training') {
       container.innerHTML = `
         <label style="${labelStyle}">Main Issue</label>
         <select id="q1" data-label="Main Issue" required style="${inputStyle}">
-          <option value="" disabled selected>Select an option</option>
+          <option value="" selected disabled>Select</option>
           <option value="training_grade">Need Industrial Training Grade</option>
           <option value="no_training_place">Need place for Industrial Training</option>
           <option value="need_letter">Need Industrial Training Letter</option>
@@ -359,7 +360,7 @@
       container.innerHTML = `
         <label style="${labelStyle}">Is your minor Declared?</label>
         <select id="q1" data-label="NE Declared?" required style="${inputStyle}">
-          <option value="" disabled selected>Select an option</option>
+          <option value="" selected disabled>Select</option>
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
@@ -413,14 +414,18 @@ function handleExamFormChange(labelStyle, inputStyle) {
 
   examFormStatus.addEventListener('change', function () {
     if (this.value === 'yes') {
-      // Show message and disable submit
+      toggleIssueDetails(true);
       examExtraFields.innerHTML = `
         <p style="color:#d32f2f; font-weight:600;">
           Please contact the Head of Department via Email if you haven't received approval yet.
         </p>
       `;
+      submitBtn.disabled = false;
+      submitBtn.style.background = '#0066bf';
+      submitBtn.style.color = '#fff';
       submitBtn.disabled = true;
     } else if (this.value === 'no') {
+      toggleIssueDetails(false);
       examExtraFields.innerHTML = `
         <label style="${labelStyle}">Course ID for Exam Retake</label>
         <input type="text" id="q2" data-label="Course ID" required style="${inputStyle}">
@@ -437,10 +442,14 @@ function handleExamFormChange(labelStyle, inputStyle) {
         <label style="${labelStyle}">Briefly explain your excuse</label>
         <input type="text" id="q6" data-label="Explain Excuse" required style="${inputStyle}">
       `;
-      submitBtn.disabled = false;
+      submitBtn.disabled = true;
+      submitBtn.style.background = '#aaa';
+      submitBtn.style.color = '#666';
     } else {
-      examExtraFields.innerHTML = '';
+      minorExtra.innerHTML = '';
       submitBtn.disabled = false;
+      submitBtn.style.background = '#0066bf';
+      submitBtn.style.color = '#fff';
     }
   });
 }
