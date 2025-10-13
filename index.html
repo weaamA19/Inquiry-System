@@ -255,10 +255,16 @@
   function showFollowupQuestions() {
     const category = document.getElementById('category').value;
     const container = document.getElementById('extraQuestions');
-    container.innerHTML = '';
+  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
 
-    // Hide Issue Details initially
-    toggleIssueDetails(false);
+  container.innerHTML = '';
+  toggleIssueDetails(false);
+
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.style.background = '#0066bf';
+    submitBtn.style.color = '#fff';
+  }
     
     const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
     const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
@@ -371,9 +377,6 @@ function handleNEMinorChange(labelStyle, inputStyle) {
   const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
 
   if (!minorSelect || !minorExtra || !submitBtn) return;
-  
-  const newSelect = minorSelect.cloneNode(true);
-  minorSelect.parentNode.replaceChild(newSelect, minorSelect);
 
   minorSelect.addEventListener('change', function () {
     if (this.value === 'yes') {
@@ -382,7 +385,7 @@ function handleNEMinorChange(labelStyle, inputStyle) {
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
-    } else if (this.value === 'no') {
+    } else (this.value === 'no') {
       toggleIssueDetails(false);
       minorExtra.innerHTML = `
         <p style="color:#d32f2f; font-weight:600;">
