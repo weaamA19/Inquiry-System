@@ -303,6 +303,9 @@
         </select>
 
         <div id="OtherCourseDetails"></div>
+        
+        <label style="${labelStyle}">Upload your schedule (image only)</label>
+        <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
       `;
       handleSectionChangeReason(labelStyle, inputStyle);
     } else if (category === 'Diploma_Program') {
@@ -441,6 +444,9 @@ function handleExamFormChange(labelStyle, inputStyle) {
 
         <label style="${labelStyle}">Briefly explain your excuse</label>
         <input type="text" id="q6" data-label="Explain Excuse" required style="${inputStyle}">
+
+        <label style="${labelStyle}">Upload your excuse (PDF only)</label>
+        <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
       `;
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
@@ -522,52 +528,74 @@ function showOthersForIndustrialTraining(labelStyle, inputStyle) {
 
 function collectFormData() {
   const data = {
-    studentName:document.getElementById('studentName').value.trim(),
+    studentName: document.getElementById('studentName').value.trim(),
     studentId: document.getElementById('studentId').value.trim(),
     contact: document.getElementById('contact').value.trim(),
     graduate: document.getElementById('graduate').value,
     registered12: document.getElementById('registered12').value,
     category: document.getElementById('category').value,
     details: document.getElementById('details').value.trim(),
-    extra: {}
+    extra: {},
+    files: [] 
   };
 
   const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
   extraInputs.forEach(el => {
-    const label = el.getAttribute('data-label') || el.id; // Use data-label for key
+    const label = el.getAttribute('data-label') || el.id;
     data.extra[label] = el.value.trim();
   });
+
+  const scheduleFile = document.getElementById('scheduleUpload');
+  if (scheduleFile && scheduleFile.files.length > 0) {
+    const file = scheduleFile.files[0];
+    data.files.push({
+      name: file.name,
+      mimeType: file.type,
+      content: null 
+    });
+  }
+
+  const excuseFile = document.getElementById('excuseUpload');
+  if (excuseFile && excuseFile.files.length > 0) {
+    const file = excuseFile.files[0];
+    data.files.push({
+      name: file.name,
+      mimeType: file.type,
+      content: null
+    });
+  }
 
   return data;
 }
 
-  document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const status = document.getElementById('statusMsg');
-    status.style.color = '#333';
-    status.innerText = 'Submitting...';
-    try {
-      const res = await fetch(proxyURL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(collectFormData())
-      });
-      const json = await res.json();
-      if (json.success) {
-        status.style.color = 'green';
-        status.innerText = 'Inquiry submitted successfully!';
-        document.getElementById('inquiryForm').reset();
-        document.getElementById('extraQuestions').innerHTML = '';
-      } else {
-        status.style.color = 'red';
-        status.innerText = 'Submission failed. Try again later.';
-      }
-    } catch (err) {
-      console.error(err);
+// Submit handler remains the same
+document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const status = document.getElementById('statusMsg');
+  status.style.color = '#333';
+  status.innerText = 'Submitting...';
+  try {
+    const res = await fetch(proxyURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(collectFormData())
+    });
+    const json = await res.json();
+    if (json.success) {
+      status.style.color = 'green';
+      status.innerText = 'Inquiry submitted successfully!';
+      document.getElementById('inquiryForm').reset();
+      document.getElementById('extraQuestions').innerHTML = '';
+    } else {
       status.style.color = 'red';
-      status.innerText = 'Error submitting form. Check console.';
+      status.innerText = 'Submission failed. Try again later.';
     }
-  });
+  } catch (err) {
+    console.error(err);
+    status.style.color = 'red';
+    status.innerText = 'Error submitting form. Check console.';
+  }
+});
   </script>
 </body>
 </html>
