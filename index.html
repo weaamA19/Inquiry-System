@@ -161,7 +161,7 @@
   }
 
   const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
-  const followupURL = "https://script.google.com/macros/s/AKfycbzOq2cn7BsLhRhZfAtvIS7G7zoweRoHRPg5kXtZrQXr5zqWiraRAr2M-B3-Z_4_7qcm/exec";
+  const followupURL = "https://script.google.com/macros/s/AKfycbzp-nvOwAH2B5PVCkryE58m-r7e7lU1jVw5iGC7NRevgevnCc-8lhIc3hs5IdpF7u0a/exec";
 
   /* ===== Switching Form ===== */
   function showSection(section) {
@@ -395,7 +395,7 @@ function handleNEMinorChange(labelStyle, inputStyle) {
     } else if (this.value === 'no') {
       toggleIssueDetails(false);
       minorExtra.innerHTML = `
-        <p style="color:#d32f2f; font-weight:600;">
+        <p style="color:#0066bf; font-weight:600;">
           Please submit a minor declaration through SIS.
         </p>
       `;
@@ -421,7 +421,7 @@ function handleExamFormChange(labelStyle, inputStyle) {
   examFormStatus.addEventListener('change', function () {
     if (this.value === 'yes') {
       examExtraFields.innerHTML = `
-        <p style="color:#d32f2f; font-weight:600;">
+        <p style="color:#0066bf; font-weight:600;">
           Please contact the Head of Department via Email if you haven't received approval yet.
         </p>
       `;
@@ -492,7 +492,7 @@ function showDiplomaSubQuestions() {
 
   if (issue === 'courses_equivalence') {
     diplomaExtra.innerHTML = `
-      <p style="color:#d32f2f; font-weight:600;">
+      <p style="color:#0066bf; font-weight:600;">
         Visit your Academic Advisor and request them to send a letter to the Head of Department with the courses that are equivalent.
       </p>
     `;
@@ -526,7 +526,7 @@ function showOthersForIndustrialTraining(labelStyle, inputStyle) {
   });
 }
 
-function collectFormData() {
+async function collectFormData() {
   const data = {
     studentName: document.getElementById('studentName').value.trim(),
     studentId: document.getElementById('studentId').value.trim(),
@@ -536,7 +536,7 @@ function collectFormData() {
     category: document.getElementById('category').value,
     details: document.getElementById('details').value.trim(),
     extra: {},
-    files: [] 
+    files: []
   };
 
   const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
@@ -545,42 +545,51 @@ function collectFormData() {
     data.extra[label] = el.value.trim();
   });
 
-  const scheduleFile = document.getElementById('scheduleUpload');
-  if (scheduleFile && scheduleFile.files.length > 0) {
-    const file = scheduleFile.files[0];
-    data.files.push({
-      name: file.name,
-      mimeType: file.type,
-      content: null 
-    });
-  }
+  const fileInputs = ['scheduleUpload', 'excuseUpload'];
 
-  const excuseFile = document.getElementById('excuseUpload');
-  if (excuseFile && excuseFile.files.length > 0) {
-    const file = excuseFile.files[0];
-    data.files.push({
-      name: file.name,
-      mimeType: file.type,
-      content: null
-    });
+  for (const id of fileInputs) {
+    const fileInput = document.getElementById(id);
+    if (fileInput && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const base64 = await toBase64(file);
+      data.files.push({
+        name: file.name,
+        mimeType: file.type,
+        content: base64
+      });
+    }
   }
 
   return data;
 }
 
-// Submit handler remains the same
+function toBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+  });
+}
+
 document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+
   const status = document.getElementById('statusMsg');
   status.style.color = '#333';
   status.innerText = 'Submitting...';
+
   try {
+    const formData = await collectFormData();
+
     const res = await fetch(proxyURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(collectFormData())
+      body: JSON.stringify(formData)
     });
+
     const json = await res.json();
+
     if (json.success) {
       status.style.color = 'green';
       status.innerText = 'Inquiry submitted successfully!';
@@ -596,6 +605,7 @@ document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
     status.innerText = 'Error submitting form. Check console.';
   }
 });
+
   </script>
 </body>
 </html>
