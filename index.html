@@ -161,7 +161,7 @@
   }
 
   const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
-  const followupURL = "https://script.google.com/macros/s/AKfycbyWUxofrNLuuqlTIoTe5GXsSScfvOZRivaNPskE5_LXas8-yZtGdPwBQtNPN5BTlN0W/exec";
+  const followupURL = "https://script.google.com/macros/s/AKfycbzkf_2R8VU0X85PamaypI8S_tFO0jQF73XPb6qEDJJX9ZkWy3crKzceJASUWKnnlKOF/exec";
 
   /* ===== Switching Form ===== */
   function showSection(section) {
@@ -536,7 +536,7 @@ async function collectFormData() {
     category: document.getElementById('category').value,
     details: document.getElementById('details').value.trim(),
     extra: {},
-    files: []
+    fileUploaded: null
   };
 
   const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
@@ -545,22 +545,27 @@ async function collectFormData() {
     data.extra[label] = el.value.trim();
   });
 
-  const fileInputs = ['scheduleUpload', 'excuseUpload'];
+const fileInputs = ['scheduleUpload', 'excuseUpload'];
 
-  for (const id of fileInputs) {
-    const fileInput = document.getElementById(id);
-    if (fileInput && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const base64 = await toBase64(file);
-      data.files.push({
-        name: file.name,
-        mimeType: file.type,
-        content: base64
-      });
+for (const id of fileInputs) {
+  const fileInput = document.getElementById(id);
+  if (fileInput && fileInput.files.length > 0) {
+    const file = fileInput.files[0];
+
+    // 500 KB MB limit check
+    if (file.size > 500 * 1024) {
+      alert(`File "${file.name}" exceeds 500 KB. Please choose a smaller file.`);
+      return null; // stop submission
     }
-  }
 
-  return data;
+    const base64 = await toBase64(file);
+    data.fileUploaded = {
+      name: file.name,
+      mimeType: file.type,
+      content: base64
+    };
+    break;
+  }
 }
 
 function toBase64(file) {
