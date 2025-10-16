@@ -330,18 +330,18 @@
         <div id="diplomaExtra"></div>
       `;
     } else if (category === 'Exam_Retake') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Have you filled the "Final Exam Absence" form?</label>
-        <select id="q1" data-label="Filled Exam Retake Form?" required style="${inputStyle}">
-          <option value="">Select</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-       
-       <div id="ExamAbsenceFormNotFilled" style="margin-top:10px;"></div>
-      `;
-      handleExamFormChange(labelStyle, inputStyle);
-    } else if (category === 'Industrial_Training') {
+        container.innerHTML = `
+          <label>Have you filled the "Final Exam Absence" form?</label>
+          <select id="examFormStatus" data-label="Filled Exam Retake Form?" required style="${inputStyle}">
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <div id="ExamAbsenceFormNotFilled"></div>
+        `;
+      
+        handleExamFormChange(labelStyle, inputStyle); // <-- attach listener **after** innerHTML
+      }else if (category === 'Industrial_Training') {
       container.innerHTML = `
         <label style="${labelStyle}">Main Issue</label>
         <select id="q1" data-label="Main Issue" required style="${inputStyle}">
@@ -425,7 +425,7 @@ function handleNEMinorChange(labelStyle, inputStyle) {
 }
 
 function handleExamFormChange(labelStyle, inputStyle) {
-  const examFormStatus = document.getElementById('q1');
+  const examFormStatus = document.getElementById('examFormStatus');
   const examExtraFields = document.getElementById('ExamAbsenceFormNotFilled');
   const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
 
@@ -443,36 +443,36 @@ function handleExamFormChange(labelStyle, inputStyle) {
       submitBtn.style.color = '#666';
     } else if (this.value === 'no') {
       examExtraFields.innerHTML = `
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q2" data-label="Course ID" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Section Number</label>
-        <input type="text" id="q3" data-label="Section Number" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Course Exam Date</label>
-        <input type="text" id="q4" data-label="Exam Date" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Instructor Name</label>
-        <input type="text" id="q5" data-label="Instructor Name" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Briefly explain your excuse</label>
-        <input type="text" id="q6" data-label="Explain Excuse" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Upload your excuse (PDF only)</label>
-        <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
-      `;
-      addFileSizeCheck('excuseUpload', 500);
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
-    } else {
-      examExtraFields.innerHTML = '';
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
+            <label style="${labelStyle}">Course ID</label>
+            <input type="text" id="examCourseId" data-label="Course ID" required style="${inputStyle}">
+    
+            <label style="${labelStyle}">Section Number</label>
+            <input type="text" id="examSection" data-label="Section Number" required style="${inputStyle}">
+    
+            <label style="${labelStyle}">Course Exam Date</label>
+            <input type="text" id="examDate" data-label="Exam Date" required style="${inputStyle}">
+    
+            <label style="${labelStyle}">Instructor Name</label>
+            <input type="text" id="examInstructor" data-label="Instructor Name" required style="${inputStyle}">
+    
+            <label style="${labelStyle}">Briefly explain your excuse</label>
+            <input type="text" id="examExcuse" data-label="Explain Excuse" required style="${inputStyle}">
+    
+            <label style="${labelStyle}">Upload your excuse (PDF only)</label>
+            <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
+          `;
+          addFileSizeCheck('excuseUpload', 500); // attach file size check **after input is created**
+          submitBtn.disabled = false;
+          submitBtn.style.background = '#0066bf';
+          submitBtn.style.color = '#fff';
+        } else {
+          examExtraFields.innerHTML = '';
+          submitBtn.disabled = false;
+          submitBtn.style.background = '#0066bf';
+          submitBtn.style.color = '#fff';
+        }
+      });
     }
-  });
-}
 
     function handleSectionChangeReason(labelStyle, inputStyle) {
       const reasonSelect = document.getElementById('q4');
@@ -559,18 +559,17 @@ async function collectFormData() {
     data.extra[label] = el.value.trim();
   });
 
-const fileInputs = ['scheduleUpload', 'excuseUpload'];
-
-const fileInput = document.getElementById('scheduleUpload');
-if (fileInput && fileInput.files.length > 0) {
-  const file = fileInput.files[0];
-  const base64 = await toBase64(file);
-  data.fileUploaded = {
-    name: file.name,
-    mimeType: file.type,
-    content: base64
-  };
-}
+    const fileInput = document.getElementById('scheduleUpload') || document.getElementById('excuseUpload');
+    
+    if (fileInput && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const base64 = await toBase64(file);
+      data.fileUploaded = {
+        name: file.name,
+        mimeType: file.type,
+        content: base64
+      };
+    }
 
 function toBase64(file) {
   return new Promise((resolve, reject) => {
