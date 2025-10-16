@@ -555,9 +555,9 @@ for (const id of fileInputs) {
     // 500 KB MB limit check
     if (file.size > 500 * 1024) {
       alert(`File "${file.name}" exceeds 500 KB. Please choose a smaller file.`);
-      return null; // stop submission
+      fileInput.value = ''; // clear the file input
+      return false; // or skip this file
     }
-
     const base64 = await toBase64(file);
     data.fileUploaded = {
       name: file.name,
