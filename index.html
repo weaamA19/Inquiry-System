@@ -308,6 +308,7 @@
         <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
       `;
       handleSectionChangeReason(labelStyle, inputStyle);
+      addFileSizeCheck('scheduleUpload', 500);
     } else if (category === 'Diploma_Program') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your advisor listed in SIS?</label>
@@ -377,6 +378,18 @@
             toggleIssueDetails(true);
     }
   }
+
+  function addFileSizeCheck(inputId, maxKB) {
+      const fileInput = document.getElementById(inputId);
+      if (!fileInput) return;
+    
+      fileInput.addEventListener('change', function () {
+        if (this.files.length > 0 && this.files[0].size > maxKB * 1024) {
+          alert(`File "${this.files[0].name}" exceeds ${maxKB} KB. Please choose a smaller file.`);
+          this.value = '';
+        }
+      });
+    }
 
 function handleNEMinorChange(labelStyle, inputStyle) {
   const minorSelect = document.getElementById('q1');
@@ -448,6 +461,7 @@ function handleExamFormChange(labelStyle, inputStyle) {
         <label style="${labelStyle}">Upload your excuse (PDF only)</label>
         <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
       `;
+      addFileSizeCheck('excuseUpload', 500);
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
@@ -547,25 +561,15 @@ async function collectFormData() {
 
 const fileInputs = ['scheduleUpload', 'excuseUpload'];
 
-for (const id of fileInputs) {
-  const fileInput = document.getElementById(id);
-  if (fileInput && fileInput.files.length > 0) {
-    const file = fileInput.files[0];
-
-    // 500 KB MB limit check
-    if (file.size > 500 * 1024) {
-      alert(`File "${file.name}" exceeds 500 KB. Please choose a smaller file.`);
-      fileInput.value = ''; // clear the file input
-      return false; // or skip this file
-    }
-    const base64 = await toBase64(file);
-    data.fileUploaded = {
-      name: file.name,
-      mimeType: file.type,
-      content: base64
-    };
-    break;
-  }
+const fileInput = document.getElementById('scheduleUpload');
+if (fileInput && fileInput.files.length > 0) {
+  const file = fileInput.files[0];
+  const base64 = await toBase64(file);
+  data.fileUploaded = {
+    name: file.name,
+    mimeType: file.type,
+    content: base64
+  };
 }
 
 function toBase64(file) {
