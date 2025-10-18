@@ -306,6 +306,7 @@
         
         <label style="${labelStyle}">Upload your schedule (image only)</label>
         <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
+        <p id="statusMsg" style="font-weight: bold;"></p>
       `;
       handleSectionChangeReason(labelStyle, inputStyle);
     } else if (category === 'Diploma_Program') {
@@ -447,6 +448,7 @@ function handleExamFormChange(labelStyle, inputStyle) {
 
         <label style="${labelStyle}">Upload your excuse (PDF only)</label>
         <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
+        <p id="statusMsg" style="font-weight: bold;"></p>
       `;
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
