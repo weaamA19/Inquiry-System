@@ -244,6 +244,28 @@
   }
 
   // ===== FOLLOW-UP QUESTIONS LOGIC =====
+
+  function addFileValidation(inputId) {
+    const fileInput = document.getElementById(inputId);
+    const statusEl = fileInput ? fileInput.nextElementSibling : null;
+    const MAX_FILE_SIZE = 50 * 1024; // 50 KB
+  
+    if (!fileInput || !statusEl) return;
+  
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+  
+      if (file.size > MAX_FILE_SIZE) {
+        statusEl.style.color = 'red';
+        statusEl.innerText = 'File is too big, kindly upload a smaller file (max 50 KB).';
+        fileInput.value = '';
+      } else {
+        statusEl.innerText = '';
+      }
+    });
+  }
+
   let courseCount = 1;
 
   // ===== Handel "Issue Details" Visibility =====
@@ -306,9 +328,10 @@
         
         <label style="${labelStyle}">Upload your schedule (image only)</label>
         <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
-        <p id="statusMsg" style="font-weight: bold;"></p>
+        <p id="sizeCheck" style="font-weight: bold;"></p>
       `;
       handleSectionChangeReason(labelStyle, inputStyle);
+      addFileValidation('scheduleUpload');
     } else if (category === 'Diploma_Program') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your advisor listed in SIS?</label>
@@ -448,8 +471,9 @@ function handleExamFormChange(labelStyle, inputStyle) {
 
         <label style="${labelStyle}">Upload your excuse (PDF only)</label>
         <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
-        <p id="statusMsg" style="font-weight: bold;"></p>
+        <p id="sizeCheck" style="font-weight: bold;"></p>
       `;
+      addFileValidation('excuseUpload');
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
@@ -573,29 +597,6 @@ function toBase64(file) {
     reader.onerror = reject;
   });
 }
-
-
-const MAX_FILE_SIZE = 50 * 1024; // 50 KB
-const statusEl = document.getElementById('statusMsg');
-
-['scheduleUpload', 'excuseUpload'].forEach(id => {
-  const fileInput = document.getElementById(id);
-  if (!fileInput) return;
-
-  fileInput.addEventListener('change', () => {
-    const file = fileInput.files[0];
-    if (!file) return; // No file selected
-
-    if (file.size > MAX_FILE_SIZE) {
-      statusEl.style.color = 'red';
-      statusEl.innerText = 'File is too big, kindly upload a smaller file (max 50 KB).';
-      fileInput.value = ''; 
-    } else {
-      // Clear any previous warning
-      statusEl.innerText = '';
-    }
-  });
-});
 
 document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
   e.preventDefault();
