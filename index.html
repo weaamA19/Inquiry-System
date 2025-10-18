@@ -245,12 +245,13 @@
 
   // ===== FOLLOW-UP QUESTIONS LOGIC =====
 
-  function addFileValidation(inputId) {
+  function attachFileValidation(inputId) {
     const fileInput = document.getElementById(inputId);
-    const statusEl = fileInput ? fileInput.nextElementSibling : null;
+    const statusEl = fileInput ? fileInput.nextElementSibling : null; 
+    const submitBtn = document.querySelector('button[type="submit"]');
     const MAX_FILE_SIZE = 50 * 1024; // 50 KB
   
-    if (!fileInput || !statusEl) return;
+    if (!fileInput || !statusEl || !submitBtn) return;
   
     fileInput.addEventListener('change', () => {
       const file = fileInput.files[0];
@@ -260,8 +261,14 @@
         statusEl.style.color = 'red';
         statusEl.innerText = 'File is too big, kindly upload a smaller file (max 50 KB).';
         fileInput.value = '';
+      submitBtn.disabled = true;
+      submitBtn.style.background = '#aaa';
+      submitBtn.style.color = '#666';
       } else {
         statusEl.innerText = '';
+      submitBtn.disabled = false;
+      submitBtn.style.background = '#0066bf';
+      submitBtn.style.color = '#fff';
       }
     });
   }
@@ -326,7 +333,7 @@
 
         <div id="OtherCourseDetails"></div>
         
-        <label style="${labelStyle}">Upload your schedule (image only)</label>
+        <label style="${labelStyle}">Upload your schedule (Image only)</label>
         <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
         <p id="sizeCheck" style="font-weight: bold;"></p>
       `;
