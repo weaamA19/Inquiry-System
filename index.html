@@ -572,6 +572,29 @@ function toBase64(file) {
   });
 }
 
+
+const MAX_FILE_SIZE = 50 * 1024; // 50 KB
+const statusEl = document.getElementById('statusMsg');
+
+['scheduleUpload', 'excuseUpload'].forEach(id => {
+  const fileInput = document.getElementById(id);
+  if (!fileInput) return;
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return; // No file selected
+
+    if (file.size > MAX_FILE_SIZE) {
+      statusEl.style.color = 'red';
+      statusEl.innerText = 'File is too big, kindly upload a smaller file (max 50 KB).';
+      fileInput.value = ''; 
+    } else {
+      // Clear any previous warning
+      statusEl.innerText = '';
+    }
+  });
+});
+
 document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
