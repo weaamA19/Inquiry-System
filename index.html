@@ -569,7 +569,7 @@ async function collectFormData() {
     category: document.getElementById('category').value,
     details: document.getElementById('details').value.trim(),
     extra: {},
-    files: []
+    file: null
   };
 
   const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
@@ -585,11 +585,11 @@ async function collectFormData() {
     if (fileInput && fileInput.files.length > 0) {
       const file = fileInput.files[0];
       const base64 = await toBase64(file);
-      data.files.push({
+      data.file = {
         name: file.name,
         mimeType: file.type,
         content: base64
-      });
+      };
     }
   }
 
