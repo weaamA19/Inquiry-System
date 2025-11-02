@@ -147,30 +147,10 @@
     </div>
   </main>
 
-  <div id="diplomaProgramDownload" style="display:none; text-align:center; margin-top:20px;">
-  <button 
-    id="diplomaBtn" 
-    onclick="showDiplomaLink()" 
-    style="background-color:#0066bf; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;">
-    Download the Plan
-  </button>
-
-  <div id="diplomaLink" style="display:none; margin-top:15px;">
-    <a 
-      href="https://drive.google.com/file/d/10daTTTkyGDvk_mhEL86Z763a9sS3oS_m/view?usp=drive_link" 
-      target="_blank"
-      style="display:inline-block; background-color:#0066bf; color:white; padding:10px 18px; border-radius:8px; text-decoration:none; font-weight:600;">
-      Open Diploma Program Plan
-    </a>
-  </div>
-</div>
-
   <script>
-
   function setActiveButton(activeId) {
     const submitBtn = document.getElementById('submitBtn');
     const followBtn = document.getElementById('followBtn');
-    const diplomaProgramDownload = document.getElementById("diplomaProgramDownload");
   
     // Reset both buttons
     submitBtn.style.background = '#f4f4f4';
@@ -393,7 +373,7 @@
           <option value="no">No</option>
         </select>
        
-       <div id="ExamAbsenceFormNotFilled" style="margin-top:10px;"></div>
+       <div id="ExamAbsenceFormNotFilled"></div>
       `;
       handleExamFormChange(labelStyle, inputStyle);
     } else if (category === 'Industrial_Training') {
@@ -427,8 +407,7 @@
         <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
         <p id="sizeCheck" style="font-weight: bold;"></p>
       `;
-      toggleIssueDetails(true);
-        } else if (category === 'NE_Minor') {
+      } else if (category === 'NE_Minor') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your minor Declared?</label>
         <select id="q1" data-label="NE Declared?" required style="${inputStyle}">
@@ -554,7 +533,6 @@ function showDiplomaSubQuestions() {
   const diplomaExtra = document.getElementById('diplomaExtra');
   const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
   const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
-  const diplomaProgramDownload = document.getElementById('diplomaProgramDownload');
 
   const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
   toggleIssueDetails(false);
@@ -573,7 +551,23 @@ function showDiplomaSubQuestions() {
       submitBtn.disabled = true;
       submitBtn.style.background = '#aaa';
       submitBtn.style.color = '#666';
-      diplomaProgramDownload.style.display = "block";
+      
+      // Show download button INSIDE the form context
+      diplomaExtra.innerHTML = `
+        <div style="text-align:center; margin-top:20px;">
+          <button onclick="showDiplomaLink()" 
+                  style="background-color:#0066bf; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600;">
+            Download the Plan
+          </button>
+          <div id="diplomaLink" style="display:none; margin-top:15px;">
+            <a href="https://drive.google.com/file/d/10daTTTkyGDvk_mhEL86Z763a9sS3oS_m/view?usp=drive_link" 
+               target="_blank"
+               style="display:inline-block; background-color:#0066bf; color:white; padding:10px 18px; border-radius:8px; text-decoration:none; font-weight:600;">
+              Open Diploma Program Plan
+            </a>
+          </div>
+        </div>
+      `;
      } 
   else if (issue === 'other_issue') {
     toggleIssueDetails(true);
@@ -586,10 +580,20 @@ function showDiplomaSubQuestions() {
       submitBtn.disabled = false;
       submitBtn.style.background = '#0066bf';
       submitBtn.style.color = '#fff';
-      diplomaProgramDownload.style.display = "none";
   }
 }
 
+function showDiplomaLink() {
+  const diplomaLink = document.getElementById('diplomaLink');
+  const downloadBtn = document.querySelector('#diplomaExtra button');
+  
+  if (downloadBtn) {
+    downloadBtn.style.display = "none";
+  }
+  if (diplomaLink) {
+    diplomaLink.style.display = "block";
+  }
+}
 
 function showOthersForIndustrialTraining(labelStyle, inputStyle) {
   const issueDetails = document.getElementById('q1');
@@ -600,11 +604,6 @@ function showOthersForIndustrialTraining(labelStyle, inputStyle) {
       toggleIssueDetails(false);
     }
   });
-}
-
-function showDiplomaLink() {
-  document.getElementById("diplomaBtn").style.display = "none";
-  document.getElementById("diplomaLink").style.display = "block";
 }
 
 async function collectFormData() {
@@ -676,9 +675,13 @@ document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
       status.innerText = 'Inquiry submitted successfully!';
       document.getElementById('inquiryForm').reset();
       document.getElementById('extraQuestions').innerHTML = '';
-      document.getElementById('diplomaProgramDownload').style.display = 'none';
       document.getElementById('diplomaLink').style.display = 'none';
-      document.getElementById('diplomaBtn').style.display = 'block';
+      
+      // Reset diploma download button if it exists
+      const downloadBtn = document.querySelector('#diplomaExtra button');
+      if (downloadBtn) {
+        downloadBtn.style.display = "block";
+      }
     } else {
       status.style.color = 'red';
       status.innerText = 'Submission failed. Try again later.';
