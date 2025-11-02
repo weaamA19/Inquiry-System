@@ -479,7 +479,7 @@ function handleExamFormChange(labelStyle, inputStyle) {
       examExtraFields.innerHTML = `
         <p style="color:#0066bf; font-weight:600; margin-bottom:15px;">
           Kindly download the 
-          <a href="YOUR_FORM_LINK_HERE" 
+          <a href="FORM_LINK" 
             target="_blank"
             style="color:#0066bf; text-decoration:underline; font-weight:600;">
             Final Exam Absence Form
@@ -622,6 +622,7 @@ const extraInputs = document.querySelectorAll('#extraQuestions input:not([type="
         mimeType: file.type,
         content: base64
       };
+      data.extra[fileInput.id] = file.name;
     }
   }
 
