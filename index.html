@@ -404,10 +404,12 @@
         <input type="text" id="q1" data-label="Course ID" required style="${inputStyle}">
         
         <label style="${labelStyle}">Upload your schedule (Image only)</label>
-        <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
+        <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required 
+              data-label="scheduleUpload" style="${inputStyle}">
         <p id="sizeCheck" style="font-weight: bold;"></p>
       `;
-      } else if (category === 'NE_Minor') {
+      addFileValidation('scheduleUpload');
+    } else if (category === 'NE_Minor') {
       container.innerHTML = `
         <label style="${labelStyle}">Is your minor Declared?</label>
         <select id="q1" data-label="NE Declared?" required style="${inputStyle}">
@@ -475,22 +477,24 @@ function handleExamFormChange(labelStyle, inputStyle) {
       submitBtn.style.color = '#666';
     } else if (this.value === 'no') {
       examExtraFields.innerHTML = `
+        <p style="color:#0066bf; font-weight:600; margin-bottom:15px;">
+          Kindly download the 
+          <a href="YOUR_FORM_LINK_HERE" 
+            target="_blank"
+            style="color:#0066bf; text-decoration:underline; font-weight:600;">
+            Final Exam Absence Form
+          </a>, 
+          fill it, and upload a PDF that includes:
+        </p>
+        <ul style="color:#0066bf; margin-bottom:15px; padding-left:20px;">
+          <li>Completed Final Exam Absence Form</li>
+          <li>Your excuse documentation</li>
+        </ul>
+
         <label style="${labelStyle}">Course ID</label>
         <input type="text" id="q2" data-label="Course ID" required style="${inputStyle}">
 
-        <label style="${labelStyle}">Section Number</label>
-        <input type="text" id="q3" data-label="Section Number" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Course Exam Date</label>
-        <input type="text" id="q4" data-label="Exam Date" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Instructor Name</label>
-        <input type="text" id="q5" data-label="Instructor Name" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Briefly explain your excuse</label>
-        <input type="text" id="q6" data-label="Explain Excuse" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Upload your excuse (PDF only)</label>
+        <label style="${labelStyle}">Upload your excuse document (PDF only)</label>
         <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
         <p id="sizeCheck" style="font-weight: bold;"></p>
       `;
