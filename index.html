@@ -552,11 +552,13 @@ function showDiplomaSubQuestions() {
       // Show diploma plan link as paragraph with link
       diplomaExtra.innerHTML = `
         <p style="margin-top:15px;">
+          Click to 
           <a href="https://drive.google.com/file/d/10daTTTkyGDvk_mhEL86Z763a9sS3oS_m/view?usp=drive_link" 
              target="_blank"
              style="color:#0066bf; text-decoration:underline; font-weight:600;">
             Download Diploma Program Plan
           </a>
+          .
         </p>
       `;
      } 
@@ -589,6 +591,7 @@ async function collectFormData() {
   const data = {
     studentName: document.getElementById('studentName').value.trim(),
     studentId: document.getElementById('studentId').value.trim(),
+    studentMajor: document.getElementById('studentMajor').value.trim(),\
     contact: document.getElementById('contact').value.trim(),
     graduate: document.getElementById('graduate').value,
     registered12: document.getElementById('registered12').value,
@@ -598,8 +601,7 @@ async function collectFormData() {
     file: null
   };
 
-  const extraInputs = document.querySelectorAll('#extraQuestions input, #extraQuestions select, #extraQuestions textarea');
-  extraInputs.forEach(el => {
+    const extraInputs = document.querySelectorAll('#extraQuestions input:not([type="file"]), #extraQuestions select, #extraQuestions textarea');  extraInputs.forEach(el => {
     const label = el.getAttribute('data-label') || el.id;
     data.extra[label] = el.value.trim();
   });
