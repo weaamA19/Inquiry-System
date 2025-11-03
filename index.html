@@ -206,10 +206,19 @@
     }
   }
 
-  // ===== Initialize event listener for graduate question =====
+  // ===== Event listener for graduate question =====
+
   document.addEventListener('DOMContentLoaded', function() {
     const graduateSelect = document.getElementById('graduate');
     graduateSelect.addEventListener('change', function() {
+      const category = document.getElementById('category');
+      const categorySelected = category.value;
+      
+      if (categorySelected === 'Need_Course_Not_Offered' && this.value === 'No') {
+        category.value = '';
+        document.getElementById('extraQuestions').innerHTML = '';
+      }
+      
       toggleNeedCourseOption(this.value === 'Yes');
     });
     
