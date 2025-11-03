@@ -4,102 +4,57 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Inquiry Portal</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body style="font-family:Arial, Helvetica, sans-serif; background:#f5f7fa; margin:0; padding:0;">
+<body>
 
-  <!-- ===== Navigation Bar ===== -->
-<nav style="display:flex; justify-content:center; gap:20px; padding:18px; background:#fff; border-bottom:1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05);">
-  <button 
-    onclick="setActiveButton('submitBtn'); showSection('submit');" 
-    id="submitBtn"
-    style="background:#0066bf; color:#fff; border:none; padding:12px 22px; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.25s ease; box-shadow:0 2px 4px rgba(0,0,0,0.1);"
-    onmouseover="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#e0e0e0';}"
-    onmouseout="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#f4f4f4';}"
-  >
-    Submit Inquiry
-  </button>
+  <nav class="nav-bar">
+    <button onclick="setActiveButton('submitBtn'); showSection('submit');" 
+            id="submitBtn" class="nav-button active">
+      Submit Inquiry
+    </button>
+    <button onclick="setActiveButton('followBtn'); showSection('followup');" 
+            id="followBtn" class="nav-button inactive">
+      Follow Up Inquiry
+    </button>
+  </nav>
 
-  <button 
-    onclick="setActiveButton('followBtn'); showSection('followup');" 
-    id="followBtn"
-    style="background:#f4f4f4; color:#333; border:none; padding:12px 22px; border-radius:8px; font-weight:600; cursor:pointer; transition:all 0.25s ease; box-shadow:0 2px 4px rgba(0,0,0,0.08);"
-    onmouseover="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#e0e0e0';}"
-    onmouseout="if(this.style.background!=='rgb(0, 102, 191)'){this.style.background='#f4f4f4';}"
-  >
-    Follow Up Inquiry
-  </button>
-</nav>
-
-  <!-- ===== Header ===== -->
-  <header style="
-    color:#000;
-    text-align:center;
-    padding:32px 12px;
-    font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    font-weight:800;
-    font-size:32px;
-    letter-spacing:1.5px;
-    text-transform:uppercase;
-    background:transparent;
-  ">
+  <header class="page-header">
     Inquiry Portal
-    <div style="
-      width:140px;
-      height:4px;
-      background:linear-gradient(90deg, #0066bf, #00aaff);
-      margin:14px auto 0;
-      border-radius:2px;
-      box-shadow:0 2px 6px rgba(0,102,191,0.4);
-    "></div>
+    <div class="header-underline"></div>
   </header>
 
-  <!-- ===== Main Sections ===== -->
-  <main style="padding:24px;">
-    <!-- === Submit Form Section === -->
+  <main class="main-content">
     <div id="submitSection">
-      <form id="inquiryForm" style="background:#fff; max-width:900px; margin:0 auto; padding:22px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.08);">
-        <!-- Student Name -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Student Name</label>
-        <input id="studentName" name="studentName" required
-             style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+      <form id="inquiryForm" class="form-container">
+        <label class="form-label">Student Name</label>
+        <input id="studentName" name="studentName" required class="form-input">
 
-        <!-- Student ID -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Student University ID</label>
-        <input id="studentId" name="studentId" required
-              style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+        <label class="form-label">Student University ID</label>
+        <input id="studentId" name="studentId" required class="form-input">
        
-        <!-- Student Major -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Major</label>
-        <input id="studentMajor" name="studentMajor" required
-             style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+        <label class="form-label">Major</label>
+        <input id="studentMajor" name="studentMajor" required class="form-input">
 
-        <!-- Contact number -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Student Contact Number</label>
-        <input id="contact" name="contact" required
-              style="width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;" />
+        <label class="form-label">Student Contact Number</label>
+        <input id="contact" name="contact" required class="form-input">
 
-        <!-- Graduate? -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Are you a graduate student in your last semester or with less than 21 credit hours remaining (excluding this semester)?</label>
-        <select id="graduate" name="graduate" required
-                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <label class="form-label">Are you a graduate student in your last semester or with less than 21 credit hours remaining (excluding this semester)?</label>
+        <select id="graduate" name="graduate" required class="form-select">
           <option value="">Select</option>
           <option value="Yes">Yes</option>
           <option value="No">No</option>
         </select>
 
-        <!-- Registered min 12 hours? -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Have you registered minimum 12 hours this semester?</label>
-        <select id="registered12" name="registered12" required
-                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <label class="form-label">Have you registered minimum 12 hours this semester?</label>
+        <select id="registered12" name="registered12" required class="form-select">
           <option value="">Select</option>
           <option value="Yes">Yes</option>
           <option value="No">No</option>
         </select>
 
-        <!-- Category -->
-        <label style="display:block; font-weight:600; margin-top:12px;">Inquiry Category</label>
-        <select id="category" name="category" required onchange="showFollowupQuestions()"
-                style="width:100%; padding:10px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;">
+        <label class="form-label">Inquiry Category</label>
+        <select id="category" name="category" required onchange="showFollowupQuestions()" class="form-select">
           <option value="">Select</option>
           <option value="Adding_Course">Adding Course(s)</option>
           <option value="Section_Change">Change Section</option>
@@ -111,441 +66,407 @@
           <option value="Others">Other Inquiries</option>
         </select>
 
-        <!-- Container for conditional follow-up questions -->
-        <div id="extraQuestions" style="margin-top:14px;"></div>
+        <div id="extraQuestions" class="extra-questions"></div>
 
-        <!-- Issue details -->
-        <div id="issueDetailContainer" style="display:none;">
-          <label style="display:block; font-weight:600; margin-top:12px;">Issue Details</label>
-          <textarea id="details" name="details" rows="4"
-                    style="width:100%;box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;"
-                    placeholder="Describe your issue..."></textarea>
+        <div id="issueDetailContainer" class="issue-details-container">
+          <label class="form-label">Issue Details</label>
+          <textarea id="details" name="details" rows="4" class="form-textarea" placeholder="Describe your issue..."></textarea>
         </div>
 
-        <!-- Submit -->
-        <button type="submit"
-                style="background:#0066bf; color:#fff; border:none; padding:10px 18px; border-radius:8px; margin-top:18px; cursor:pointer; font-weight:600;">
-          Submit Inquiry
-        </button>
-
-        <p id="statusMsg" style="margin-top:12px; font-size:14px;"></p>
+        <button type="submit" class="submit-button">Submit Inquiry</button>
+        <p id="statusMsg" class="status-message"></p>
       </form>
     </div>
 
-    <!-- === Follow-Up Section === -->
-    <div id="followupSection" style="display:none; text-align:center;">
-      <div style="background:#fff; max-width:600px; margin:0 auto; padding:30px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.08);">
-        <h2 style="font-size:22px; margin-bottom:12px;">Follow Up Inquiry</h2>
+    <div id="followupSection" class="followup-section">
+      <div class="followup-container">
+        <h2 class="followup-title">Follow Up Inquiry</h2>
         <p>Enter your Student ID to check your inquiry status.</p>
-        <input id="followId" type="text" placeholder="Enter Student ID"
-              style="width:80%; max-width:400px; padding:10px 12px; border:1px solid #ccc; border-radius:6px; font-size:15px; margin-top:10px;">
-        <button onclick="checkStatus()" style="background:#0066bf; color:white; border:none; padding:10px 18px; border-radius:6px; font-weight:600; margin-top:10px; cursor:pointer;">Check Status</button>
-
-        <div id="followupResult" style="margin-top:20px; text-align:left;"></div>
+        <input id="followId" type="text" placeholder="Enter Student ID" class="followup-input">
+        <button onclick="checkStatus()" class="check-status-button">Check Status</button>
+        <div id="followupResult" class="followup-result"></div>
       </div>
     </div>
   </main>
 
   <script>
-  function setActiveButton(activeId) {
-    const submitBtn = document.getElementById('submitBtn');
-    const followBtn = document.getElementById('followBtn');
-  
-    // Reset both buttons
-    submitBtn.style.background = '#f4f4f4';
-    submitBtn.style.color = '#333';
-  
-    followBtn.style.background = '#f4f4f4';
-    followBtn.style.color = '#333';
-  
-    // Highlight active button
-    const activeBtn = document.getElementById(activeId);
-    activeBtn.style.background = '#0066bf';
-    activeBtn.style.color = '#fff';
-  }
-
-  const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
-  const followupURL = "https://script.google.com/macros/s/AKfycbyY4Tppy1KoUd7NuL4yBj2J_jq5aluDhSXLJgsv3cWmMzW7ZDQBcgZbjcOnBfn6gxxi/exec";
-
-  /* ===== Switching Form ===== */
-  function showSection(section) {
-    const submit = document.getElementById('submitSection');
-    const follow = document.getElementById('followupSection');
-    const sBtn = document.getElementById('submitBtn');
-    const fBtn = document.getElementById('followBtn');
-    if (section === 'submit') {
-      submit.style.display = 'block';
-      follow.style.display = 'none';
-      sBtn.style.background = '#0066bf';
-      sBtn.style.color = 'white';
-      fBtn.style.background = '#eaeaea';
-      fBtn.style.color = '#333';
-    } else {
-      submit.style.display = 'none';
-      follow.style.display = 'block';
-      fBtn.style.background = '#0066bf';
-      fBtn.style.color = 'white';
-      sBtn.style.background = '#eaeaea';
-      sBtn.style.color = '#333';
-    }
-  }
-
-  // ===== "Need Course Not Offered" option dispalyed for Graduates only =====
-  function toggleNeedCourseOption(show) {
-    const categorySelect = document.getElementById('category');
-    const existingOption = categorySelect.querySelector('option[value="Need_Course_Not_Offered"]');
+    function setActiveButton(activeId) {
+      const submitBtn = document.getElementById('submitBtn');
+      const followBtn = document.getElementById('followBtn');
     
-    if (show && !existingOption) {
-      const industrialTrainingOption = categorySelect.querySelector('option[value="Industrial_Training"]');
-      const newOption = document.createElement('option');
-      newOption.value = "Need_Course_Not_Offered";
-      newOption.textContent = "Need Course Not Offered";
-      categorySelect.insertBefore(newOption, industrialTrainingOption.nextSibling);
-    } else if (!show && existingOption) {
-      existingOption.remove();
+      submitBtn.className = 'nav-button inactive';
+      followBtn.className = 'nav-button inactive';
+    
+      const activeBtn = document.getElementById(activeId);
+      activeBtn.className = 'nav-button active';
     }
-  }
 
-  // ===== Event listener for graduate question =====
-
-  document.addEventListener('DOMContentLoaded', function() {
-    const graduateSelect = document.getElementById('graduate');
-    graduateSelect.addEventListener('change', function() {
-      const category = document.getElementById('category');
-      const categorySelected = category.value;
+    function showSection(section) {
+      const submit = document.getElementById('submitSection');
+      const follow = document.getElementById('followupSection');
       
-      if (categorySelected === 'Need_Course_Not_Offered' && this.value === 'No') {
-        category.value = '';
-        document.getElementById('extraQuestions').innerHTML = '';
+      if (section === 'submit') {
+        submit.style.display = 'block';
+        follow.style.display = 'none';
+        setActiveButton('submitBtn');
+      } else {
+        submit.style.display = 'none';
+        follow.style.display = 'block';
+        setActiveButton('followBtn');
       }
-      
-      toggleNeedCourseOption(this.value === 'Yes');
-    });
-    
-    toggleNeedCourseOption(false);
-  });
-
-  // ===== Submit Follow-up Request =====
-  async function checkStatus() {
-    const id = document.getElementById('followId').value.trim();
-    const followup_response_container = document.getElementById('followupResult');
-    followup_response_container.innerHTML = '';
-
-    if (!id) {
-      followup_response_container.innerHTML = '<p style="color:red;">Please enter your Student ID.</p>';
-      return;
     }
 
-  // Show loading indicator
-  followup_response_container.innerHTML = '<p style="color:#0066bf; font-weight:600;">Fetching data, please wait...</p>';
+    const proxyURL = "https://inquiry-system-five.vercel.app/api/submit";
+    const followupURL = "https://script.google.com/macros/s/AKfycbyY4Tppy1KoUd7NuL4yBj2J_jq5aluDhSXLJgsv3cWmMzW7ZDQBcgZbjcOnBfn6gxxi/exec";
 
-    try {
-      const res = await fetch(followupURL + "?id=" + encodeURIComponent(id));
-      const data = await res.json();
+    function toggleNeedCourseOption(show) {
+      const categorySelect = document.getElementById('category');
+      const existingOption = categorySelect.querySelector('option[value="Need_Course_Not_Offered"]');
+      
+      if (show && !existingOption) {
+        const industrialTrainingOption = categorySelect.querySelector('option[value="Industrial_Training"]');
+        const newOption = document.createElement('option');
+        newOption.value = "Need_Course_Not_Offered";
+        newOption.textContent = "Need Course Not Offered";
+        categorySelect.insertBefore(newOption, industrialTrainingOption.nextSibling);
+      } else if (!show && existingOption) {
+        existingOption.remove();
+      }
+    }
 
-      if (!data || data.length === 0) {
-        followup_response_container.innerHTML = '<p style="color:#d32f2f; font-weight:600;">No inquiries found for this ID.</p>';
+    document.addEventListener('DOMContentLoaded', function() {
+      const graduateSelect = document.getElementById('graduate');
+      graduateSelect.addEventListener('change', function() {
+        const category = document.getElementById('category');
+        const categorySelected = category.value;
+        
+        if (categorySelected === 'Need_Course_Not_Offered' && this.value === 'No') {
+          category.value = '';
+          document.getElementById('extraQuestions').innerHTML = '';
+        }
+        
+        toggleNeedCourseOption(this.value === 'Yes');
+      });
+      
+      toggleNeedCourseOption(false);
+    });
+
+    async function checkStatus() {
+      const id = document.getElementById('followId').value.trim();
+      const followup_response_container = document.getElementById('followupResult');
+      followup_response_container.innerHTML = '';
+
+      if (!id) {
+        followup_response_container.innerHTML = '<p style="color:red;">Please enter your Student ID.</p>';
         return;
       }
 
-      let html = '<h3>Your Inquiries:</h3>';
-      data.forEach((d, i) => {
-        const now = new Date();
-        const submitted = new Date(d.timestamp);
-        const diffMs = now - submitted; // difference in milliseconds
-        const diffMins = Math.floor(diffMs / 60000);
-        
-        let displayTime;
-        if (diffMins < 1) displayTime = "Just now";
-        else if (diffMins < 60) displayTime = `${diffMins} min ago`;
-        else if (diffMins < 1440) displayTime = `${Math.floor(diffMins/60)} hours ago`;
-        else displayTime = submitted.toLocaleString('en-GB', { 
-            day: '2-digit', month: '2-digit', year: 'numeric',
-            hour: '2-digit', minute: '2-digit', second: '2-digit',
-            hour12: true
-          });
+      followup_response_container.innerHTML = '<p style="color:#0066bf; font-weight:600;">Fetching data, please wait...</p>';
 
-        html += `
-          <div style="border:1px solid #ccc; border-radius:6px; padding:10px; margin-top:10px;">
-            <p><strong>Inquiry #${i + 1}</strong></p>
-            <p><strong>Inquiry Submitted Date:</strong> ${displayTime}</p>
-            <p><strong>Category:</strong> ${d.category}</p>
-            <p><strong>Request Status:</strong> <span style="color:${d.status === 'Pending' ? 'orange' : 'green'}">${d.status}</span></p>
+      try {
+        const res = await fetch(followupURL + "?id=" + encodeURIComponent(id));
+        const data = await res.json();
+
+        if (!data || data.length === 0) {
+          followup_response_container.innerHTML = '<p style="color:#d32f2f; font-weight:600;">No inquiries found for this ID.</p>';
+          return;
+        }
+
+        let html = '<h3>Your Inquiries:</h3>';
+        data.forEach((d, i) => {
+          const now = new Date();
+          const submitted = new Date(d.timestamp);
+          const diffMs = now - submitted;
+          const diffMins = Math.floor(diffMs / 60000);
+          
+          let displayTime;
+          if (diffMins < 1) displayTime = "Just now";
+          else if (diffMins < 60) displayTime = `${diffMins} min ago`;
+          else if (diffMins < 1440) displayTime = `${Math.floor(diffMins/60)} hours ago`;
+          else displayTime = submitted.toLocaleString('en-GB', { 
+              day: '2-digit', month: '2-digit', year: 'numeric',
+              hour: '2-digit', minute: '2-digit', second: '2-digit',
+              hour12: true
+            });
+
+          html += `
+            <div class="inquiry-item">
+              <p><strong>Inquiry #${i + 1}</strong></p>
+              <p><strong>Inquiry Submitted Date:</strong> ${displayTime}</p>
+              <p><strong>Category:</strong> ${d.category}</p>
+              <p><strong>Request Status:</strong> <span style="color:${d.status === 'Pending' ? 'orange' : 'green'}">${d.status}</span></p>
+            </div>
+          `;
+        });
+        followup_response_container.innerHTML = html;
+
+      } catch (err) {
+        console.error(err);
+        followup_response_container.innerHTML = '<p style="color:red;">Error fetching data. Please try again later.</p>';
+      }
+    }
+
+    function addFileValidation(inputId) {
+      const fileInput = document.getElementById(inputId);
+      const statusEl = fileInput ? fileInput.nextElementSibling : null; 
+      const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
+      const MAX_FILE_SIZE = 50 * 1024;
+    
+      if (!fileInput || !statusEl || !submitBtn) return;
+    
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+    
+        if (file.size > MAX_FILE_SIZE) {
+          statusEl.style.color = 'red';
+          statusEl.innerText = 'File is too big, kindly upload a smaller file (max 50 KB).';
+          fileInput.value = '';
+        submitBtn.disabled = true;
+        submitBtn.style.background = '#aaa';
+        submitBtn.style.color = '#666';
+        } else {
+          statusEl.innerText = '';
+        submitBtn.disabled = false;
+        submitBtn.style.background = '#0066bf';
+        submitBtn.style.color = '#fff';
+        }
+      });
+    }
+
+    let courseCount = 1;
+
+    function toggleIssueDetails(show) {
+      const issueContainer = document.getElementById('issueDetailContainer');
+      issueContainer.style.display = show ? 'block' : 'none';
+    }
+
+    function showFollowupQuestions() {
+      const category = document.getElementById('category').value;
+      const container = document.getElementById('extraQuestions');
+      const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
+
+      container.innerHTML = '';
+      toggleIssueDetails(false);
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.background = '#0066bf';
+        submitBtn.style.color = '#fff';
+      }
+      
+      const labelClass = 'form-label';
+      const inputClass = 'form-input';
+
+      if (category === 'Adding_Course') {
+        container.innerHTML = `
+          <label class="${labelClass}">Have you added the course to the waiting list?</label>
+          <select id="q1" data-label="Added to waiting list?" required class="${inputClass}">
+            <option value="" selected disabled>Select</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+
+          <label class="${labelClass}">Course ID</label>
+          <input type="text" id="q2" data-label="Course ID" required class="${inputClass}">
+
+          <label class="${labelClass}">Section Requested</label>
+          <input type="text" id="q3" data-label="Section Requested" required class="${inputClass}">
+        `;
+      } else if (category === 'Section_Change') {
+        container.innerHTML = `
+          <label class="${labelClass}">Course ID</label>
+          <input type="text" id="q1" data-label="Course ID" required class="${inputClass}">
+
+          <label class="${labelClass}">Current Section</label>
+          <input type="text" id="q2" data-label="Current Section" required class="${inputClass}">
+
+          <label class="${labelClass}">Requested Section</label>
+          <input type="text" id="q3" data-label="Requested Section" required class="${inputClass}">
+
+          <label class="${labelClass}">Reason for Section Change</label>
+          <select id="q4" data-label="Reason for section change:" required class="${inputClass}">
+            <option value="" selected disabled>Select</option>
+            <option value="addAnotherCourse">Need to Register Another Course</option>
+            <option value="longBreak">Break of 6 hours or more</option>
+          </select>
+
+          <div id="OtherCourseDetails"></div>
+          
+          <label class="${labelClass}">Upload your schedule (Image only)</label>
+          <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required class="${inputClass}">
+          <p class="file-size-check"></p>
+        `;
+        handleSectionChangeReason(labelClass, inputClass);
+        addFileValidation('scheduleUpload');
+      } else if (category === 'Diploma_Program') {
+        container.innerHTML = `
+          <label class="${labelClass}">Is your advisor listed in SIS?</label>
+          <select id="q1" data-label="Advisor appears in SIS?" required class="${inputClass}">
+            <option value="" selected disabled>Select</option>
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+
+          <label class="${labelClass}">Main Issue</label>
+          <select id="q2" data-label="Main Issue" required class="${inputClass}" onchange="showDiplomaSubQuestions()">
+            <option value="">Select</option>
+            <option value="courses_equivalence">Course(s) equivalence</option>
+            <option value="advisor_not_shown">Don't have an advisor</option>
+            <option value="Need_AD_Program">Need the "Associate Diploma in Information Technology" Program</option>
+            <option value="other_issue">Others</option>
+          </select>
+
+          <div id="diplomaExtra"></div>
+        `;
+      } else if (category === 'Exam_Retake') {
+        container.innerHTML = `
+          <label class="${labelClass}">Have you filled the "Final Exam Absence" form?</label>
+          <select id="q1" data-label="Filled Exam Retake Form?" required class="${inputClass}">
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+         
+         <div id="ExamAbsenceFormNotFilled"></div>
+        `;
+        handleExamFormChange(labelClass, inputClass);
+      } else if (category === 'Industrial_Training') {
+        container.innerHTML = `
+          <label class="${labelClass}">Main Issue</label>
+          <select id="q1" data-label="Main Issue" required class="${inputClass}">
+            <option value="" selected disabled>Select</option>
+            <option value="need_training_grade">Need Industrial Training Grade</option>
+            <option value="looking_for_training_place">Need place for Industrial Training</option>
+            <option value="need_training_letter">Need Industrial Training Letter</option>
+            <option value="other_issue">Others</option>
+          </select>
+        `;
+        showOthersForIndustrialTraining(labelClass, inputClass);
+      } else if (category === 'Senior_Project') {
+        container.innerHTML = `
+          <div style="margin-top:12px;">
+            <p class="diploma-instruction">Kindly visit the Senior Project Coordinator.</p>
+            <p style="font-size:14px; color:#0066bf; margin:6px 0 25px 0;">
+              If the Head of Department was your supervisor, send an email or visit the department after registration week.
+            </p>
           </div>
         `;
-      });
-      followup_response_container.innerHTML = html;
-
-    } catch (err) {
-      console.error(err);
-      followup_response_container.innerHTML = '<p style="color:red;">Error fetching data. Please try again later.</p>';
-    }
-  }
-
-  // ===== FOLLOW-UP QUESTIONS LOGIC =====
-
-  function addFileValidation(inputId) {
-    const fileInput = document.getElementById(inputId);
-    const statusEl = fileInput ? fileInput.nextElementSibling : null; 
-    const submitBtn = document.querySelector('button[type="submit"]');
-    const MAX_FILE_SIZE = 50 * 1024; // 50 KB
-  
-    if (!fileInput || !statusEl || !submitBtn) return;
-  
-    fileInput.addEventListener('change', () => {
-      const file = fileInput.files[0];
-      if (!file) return;
-  
-      if (file.size > MAX_FILE_SIZE) {
-        statusEl.style.color = 'red';
-        statusEl.innerText = 'File is too big, kindly upload a smaller file (max 50 KB).';
-        fileInput.value = '';
-      submitBtn.disabled = true;
-      submitBtn.style.background = '#aaa';
-      submitBtn.style.color = '#666';
-      } else {
-        statusEl.innerText = '';
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
+        toggleIssueDetails(true);
+      } else if (category === 'Need_Course_Not_Offered') {
+        container.innerHTML = `
+          <label class="${labelClass}">Course ID</label>
+          <input type="text" id="q1" data-label="Course ID" required class="${inputClass}">
+          
+          <label class="${labelClass}">Upload your schedule (Image only)</label>
+          <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required 
+                data-label="scheduleUpload" class="${inputClass}">
+          <p class="file-size-check"></p>
+        `;
+        addFileValidation('scheduleUpload');
+      } else if (category === 'NE_Minor') {
+        container.innerHTML = `
+          <label class="${labelClass}"> Have you submitted your minor declaration through the SIS portal?</label>
+          <select id="q1" data-label="NE Declared?" required class="${inputClass}">
+            <option value="" selected disabled>Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+          <div id="minorExtra" style="margin-top:12px;"></div>
+        `;
+        handleNEMinorChange(labelClass, inputClass);
+      } else if (category === 'Others') {
+        toggleIssueDetails(true);
       }
-    });
-  }
-
-  let courseCount = 1;
-
-  // ===== Handel "Issue Details" Visibility =====
-  function toggleIssueDetails(show) {
-    const issueContainer = document.getElementById('issueDetailContainer');
-    issueContainer.style.display = show ? 'block' : 'none';
-  }
-
-  function showFollowupQuestions() {
-    const category = document.getElementById('category').value;
-    const container = document.getElementById('extraQuestions');
-  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
-
-  container.innerHTML = '';
-  toggleIssueDetails(false);
-
-  if (submitBtn) {
-    submitBtn.disabled = false;
-    submitBtn.style.background = '#0066bf';
-    submitBtn.style.color = '#fff';
-  }
-    
-    const labelStyle = 'display:block; font-weight:600; margin-top:12px;';
-    const inputStyle = 'width:100%; box-sizing:border-box; padding:10px 12px; margin-top:6px; border:1px solid #ccc; border-radius:6px; font-size:14px;';
-
-    if (category === 'Adding_Course') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Have you added the course to the waiting list?</label>
-        <select id="q1" data-label="Added to waiting list?" required  style="${inputStyle}">
-          <option value="" selected disabled>Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q2" data-label="Course ID" required  style="${inputStyle}">
-
-        <label style="${labelStyle}">Section Requested</label>
-        <input type="text" id="q3" data-label="Section Requested" required style="${inputStyle}">
-      `;
-    } else if (category === 'Section_Change') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q1" data-label="Course ID" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Current Section</label>
-        <input type="text" id="q2" data-label="Current Section" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Requested Section</label>
-        <input type="text" id="q3" data-label="Requested Section" required style="${inputStyle}">
-
-        <label style="${labelStyle}">Reason for Section Change</label>
-         <select id="q4" data-label="Reason for section change:" required style="${inputStyle}">
-          <option value="" selected disabled>Select</option>
-          <option value="addAnotherCourse">Need to Register Another Course</option>
-          <option value="longBreak">Break of 6 hours or more</option>
-        </select>
-
-        <div id="OtherCourseDetails"></div>
-        
-        <label style="${labelStyle}">Upload your schedule (Image only)</label>
-        <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required style="${inputStyle}">
-        <p id="sizeCheck" style="font-weight: bold;"></p>
-      `;
-      handleSectionChangeReason(labelStyle, inputStyle);
-      addFileValidation('scheduleUpload');
-    } else if (category === 'Diploma_Program') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Is your advisor listed in SIS?</label>
-        <select id="q1" data-label="Advisor appears in SIS?" required style="${inputStyle}">
-          <option value="" selected disabled>Select</option>
-          <option>Yes</option>
-          <option>No</option>
-        </select>
-
-        <label style="${labelStyle}">Main Issue</label>
-        <select id="q2" data-label="Main Issue" required style="${inputStyle}" onchange="showDiplomaSubQuestions()">
-          <option value="">Select</option>
-          <option value="courses_equivalence">Course(s) equivalence</option>
-          <option value="advisor_not_shown">Don't have an advisor</option>
-          <option value="Need_AD_Program">Need the "Associate Diploma in Information Technology" Program</option>
-          <option value="other_issue">Others</option>
-        </select>
-
-        <div id="diplomaExtra"></div>
-      `;
-    } else if (category === 'Exam_Retake') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Have you filled the "Final Exam Absence" form?</label>
-        <select id="q1" data-label="Filled Exam Retake Form?" required style="${inputStyle}">
-          <option value="">Select</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-       
-       <div id="ExamAbsenceFormNotFilled"></div>
-      `;
-      handleExamFormChange(labelStyle, inputStyle);
-    } else if (category === 'Industrial_Training') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Main Issue</label>
-        <select id="q1" data-label="Main Issue" required style="${inputStyle}">
-          <option value="" selected disabled>Select</option>
-          <option value="need_training_grade">Need Industrial Training Grade</option>
-          <option value="looking_for_training_place">Need place for Industrial Training</option>
-          <option value="need_training_letter">Need Industrial Training Letter</option>
-          <option value="other_issue">Others</option>
-        </select>
-      `;
-      showOthersForIndustrialTraining(labelStyle, inputStyle);
-    } else if (category === 'Senior_Project') {
-      container.innerHTML = `
-        <div style="margin-top:12px;">
-          <p style="font-weight:600; color:#0066bf;">Kindly visit the Senior Project Coordinator.</p>
-          <p style="font-size:14px; color:#0066bf; margin:6px 0 25px 0;">
-            If the Head of Department was your supervisor, send an email or visit the department after registration week.
-          </p>
-        </div>
-      `;
-      toggleIssueDetails(true);
-        } else if (category === 'Need_Course_Not_Offered') {
-      container.innerHTML = `
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q1" data-label="Course ID" required style="${inputStyle}">
-        
-        <label style="${labelStyle}">Upload your schedule (Image only)</label>
-        <input type="file" id="scheduleUpload" name="scheduleUpload" accept="image/*" required 
-              data-label="scheduleUpload" style="${inputStyle}">
-        <p id="sizeCheck" style="font-weight: bold;"></p>
-      `;
-      addFileValidation('scheduleUpload');
-    } else if (category === 'NE_Minor') {
-      container.innerHTML = `
-        <label style="${labelStyle}"> Have you submitted your minor declaration through the SIS portal?</label>
-        <select id="q1" data-label="NE Declared?" required style="${inputStyle}">
-          <option value="" selected disabled>Select</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-        <div id="minorExtra" style="margin-top:12px;"></div>
-      `;
-      handleNEMinorChange(labelStyle, inputStyle);
-        } else if (category === 'Others') {
-            toggleIssueDetails(true);
     }
-  }
 
-function handleNEMinorChange(labelStyle, inputStyle) {
-  const minorSelect = document.getElementById('q1');
-  const minorExtra = document.getElementById('minorExtra');
-  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
+    function handleNEMinorChange(labelClass, inputClass) {
+      const minorSelect = document.getElementById('q1');
+      const minorExtra = document.getElementById('minorExtra');
+      const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
 
-  if (!minorSelect || !minorExtra || !submitBtn) return;
+      if (!minorSelect || !minorExtra || !submitBtn) return;
 
-  minorSelect.addEventListener('change', function () {
-    if (this.value === 'yes') {
-      toggleIssueDetails(true);
-      minorExtra.innerHTML = '';
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
-    } else if (this.value === 'no') {
-      toggleIssueDetails(false);
-      minorExtra.innerHTML = `
-        <p style="color:#0066bf; font-weight:600;">
-          Please submit a minor declaration through SIS.
-        </p>
-      `;
-      submitBtn.disabled = true;
-      submitBtn.style.background = '#aaa';
-      submitBtn.style.color = '#666';
-    } else {
-      minorExtra.innerHTML = '';
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
+      minorSelect.addEventListener('change', function () {
+        if (this.value === 'yes') {
+          toggleIssueDetails(true);
+          minorExtra.innerHTML = '';
+          submitBtn.disabled = false;
+          submitBtn.style.background = '#0066bf';
+          submitBtn.style.color = '#fff';
+        } else if (this.value === 'no') {
+          toggleIssueDetails(false);
+          minorExtra.innerHTML = `
+            <p class="diploma-instruction">
+              Please submit a minor declaration through SIS.
+            </p>
+          `;
+          submitBtn.disabled = true;
+          submitBtn.style.background = '#aaa';
+          submitBtn.style.color = '#666';
+        } else {
+          minorExtra.innerHTML = '';
+          submitBtn.disabled = false;
+          submitBtn.style.background = '#0066bf';
+          submitBtn.style.color = '#fff';
+        }
+      });
     }
-  });
-}
 
-function handleExamFormChange(labelStyle, inputStyle) {
-  const examFormStatus = document.getElementById('q1');
-  const examExtraFields = document.getElementById('ExamAbsenceFormNotFilled');
-  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
+    function handleExamFormChange(labelClass, inputClass) {
+      const examFormStatus = document.getElementById('q1');
+      const examExtraFields = document.getElementById('ExamAbsenceFormNotFilled');
+      const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
 
-  if (!examFormStatus || !examExtraFields || !submitBtn) return;
+      if (!examFormStatus || !examExtraFields || !submitBtn) return;
 
-  examFormStatus.addEventListener('change', function () {
-    if (this.value === 'yes') {
-      examExtraFields.innerHTML = `
-        <p style="color:#0066bf; font-weight:600;">
-          Please contact the Head of Department via Email if you haven't received approval yet.
-        </p>
-      `;
-      submitBtn.disabled = true;
-      submitBtn.style.background = '#aaa';
-      submitBtn.style.color = '#666';
-    } else if (this.value === 'no') {
-      examExtraFields.innerHTML = `
-        <p style="color:0066bf; font-weight:600; margin-bottom:15px;">
-          Kindly download the following
-          <a href="FORM_LINK" 
-            target="_blank"
-            style="color:#0066bf; text-decoration:underline; font-weight:600;">
-            Final Exam Absence Form
-          </a>, 
-          fill it, and upload a single PDF that includes:
-        </p>
-        <ul style="color:#0066bf; margin-bottom:15px; padding-left:20px;">
-          <li>Completed Final Exam Absence Form</li>
-          <li>Your excuse document(s)</li>
-        </ul>
+      examFormStatus.addEventListener('change', function () {
+        if (this.value === 'yes') {
+          examExtraFields.innerHTML = `
+            <p class="diploma-instruction">
+              Please contact the Head of Department via Email if you haven't received approval yet.
+            </p>
+          `;
+          submitBtn.disabled = true;
+          submitBtn.style.background = '#aaa';
+          submitBtn.style.color = '#666';
+        } else if (this.value === 'no') {
+          examExtraFields.innerHTML = `
+            <p class="diploma-instruction" style="margin-bottom:15px;">
+              Kindly download the following
+              <a href="FORM_LINK" 
+                target="_blank"
+                class="diploma-link">
+                Final Exam Absence Form
+              </a>, 
+              fill it, and upload a single PDF that includes:
+            </p>
+            <ul class="diploma-bullet-list">
+              <li>Completed Final Exam Absence Form</li>
+              <li>Your excuse document(s)</li>
+            </ul>
 
-        <label style="${labelStyle}">Course ID</label>
-        <input type="text" id="q2" data-label="Course ID" required style="${inputStyle}">
+            <label class="${labelClass}">Course ID</label>
+            <input type="text" id="q2" data-label="Course ID" required class="${inputClass}">
 
-        <label style="${labelStyle}">Upload your excuse document (PDF only)</label>
-        <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required style="${inputStyle}">
-        <p id="sizeCheck" style="font-weight: bold;"></p>
-      `;
-      addFileValidation('excuseUpload');
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
-    } else {
-      examExtraFields.innerHTML = '';
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
+            <label class="${labelClass}">Upload your excuse document (PDF only)</label>
+            <input type="file" id="excuseUpload" name="excuseUpload" accept="application/pdf" required class="${inputClass}">
+            <p class="file-size-check"></p>
+          `;
+          addFileValidation('excuseUpload');
+          submitBtn.disabled = false;
+          submitBtn.style.background = '#0066bf';
+          submitBtn.style.color = '#fff';
+        } else {
+          examExtraFields.innerHTML = '';
+          submitBtn.disabled = false;
+          submitBtn.style.background = '#0066bf';
+          submitBtn.style.color = '#fff';
+        }
+      });
     }
-  });
-}
 
-    function handleSectionChangeReason(labelStyle, inputStyle) {
+    function handleSectionChangeReason(labelClass, inputClass) {
       const reasonSelect = document.getElementById('q4');
       const extraFields = document.getElementById('OtherCourseDetails');
     
@@ -554,11 +475,11 @@ function handleExamFormChange(labelStyle, inputStyle) {
       reasonSelect.addEventListener('change', function () {
         if (this.value === 'addAnotherCourse') {
           extraFields.innerHTML = `
-            <label style="${labelStyle}">Enter the other Course ID </label>
-            <input type="text" id="q5" data-label="Other Course ID" required style="${inputStyle}">
+            <label class="${labelClass}">Enter the other Course ID </label>
+            <input type="text" id="q5" data-label="Other Course ID" required class="${inputClass}">
     
-            <label style="${labelStyle}">Enter the section number of that course</label>
-            <input type="text" id="q6" data-label="Other Course Section" required style="${inputStyle}">
+            <label class="${labelClass}">Enter the section number of that course</label>
+            <input type="text" id="q6" data-label="Other Course Section" required class="${inputClass}">
           `;
         } else {
           extraFields.innerHTML = '';
@@ -566,147 +487,145 @@ function handleExamFormChange(labelStyle, inputStyle) {
       });
     }
 
-function showDiplomaSubQuestions() {
-  const issue = document.getElementById('q2').value;
-  const diplomaExtra = document.getElementById('diplomaExtra');
-  const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
-  toggleIssueDetails(false);
-
-  if (issue === 'courses_equivalence') {
-    diplomaExtra.innerHTML = `
-      <p style="color:#0066bf; font-weight:600;">
-        Visit your Academic Advisor and request them to send a letter to the Head of Department with the courses that are equivalent.
-      </p>
-    `;
-      submitBtn.disabled = true;
-      submitBtn.style.background = '#aaa';
-      submitBtn.style.color = '#666';
-  }
-   else if (issue === 'Need_AD_Program') {
-      submitBtn.disabled = true;
-      submitBtn.style.background = '#aaa';
-      submitBtn.style.color = '#666';
-      
-      diplomaExtra.innerHTML = `
-        <p style="margin-top:15px;">
-          Click to 
-          <a href="https://drive.google.com/file/d/10daTTTkyGDvk_mhEL86Z763a9sS3oS_m/view?usp=drive_link" 
-             target="_blank"
-             style="color:#0066bf; text-decoration:underline; font-weight:600;">
-            Download Diploma Program Plan
-          </a>
-          .
-        </p>
-      `;
-     } 
-  else if (issue === 'other_issue') {
-    toggleIssueDetails(true);
-    diplomaExtra.innerHTML = '';
-    submitBtn.disabled = false;
-    submitBtn.style.background = '#0066bf';
-    submitBtn.style.color = '#fff';  } 
-  else {
-      diplomaExtra.innerHTML = '';
-      submitBtn.disabled = false;
-      submitBtn.style.background = '#0066bf';
-      submitBtn.style.color = '#fff';
-  }
-}
-
-function showOthersForIndustrialTraining(labelStyle, inputStyle) {
-  const issueDetails = document.getElementById('q1');
-  issueDetails.addEventListener('change', function () {
-    if (this.value === 'other_issue') {
-      toggleIssueDetails(true);
-    } else {
+    function showDiplomaSubQuestions() {
+      const issue = document.getElementById('q2').value;
+      const diplomaExtra = document.getElementById('diplomaExtra');
+      const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
       toggleIssueDetails(false);
+
+      if (issue === 'courses_equivalence') {
+        diplomaExtra.innerHTML = `
+          <p class="diploma-instruction">
+            Visit your Academic Advisor and request them to send a letter to the Head of Department with the courses that are equivalent.
+          </p>
+        `;
+        submitBtn.disabled = true;
+        submitBtn.style.background = '#aaa';
+        submitBtn.style.color = '#666';
+      } else if (issue === 'Need_AD_Program') {
+        submitBtn.disabled = true;
+        submitBtn.style.background = '#aaa';
+        submitBtn.style.color = '#666';
+        
+        diplomaExtra.innerHTML = `
+          <p style="margin-top:15px;">
+            Click to 
+            <a href="https://drive.google.com/file/d/10daTTTkyGDvk_mhEL86Z763a9sS3oS_m/view?usp=drive_link" 
+              target="_blank"
+              class="diploma-link">
+              Download Diploma Program Plan
+            </a>
+            .
+          </p>
+        `;
+      } else if (issue === 'other_issue') {
+        toggleIssueDetails(true);
+        diplomaExtra.innerHTML = '';
+        submitBtn.disabled = false;
+        submitBtn.style.background = '#0066bf';
+        submitBtn.style.color = '#fff';
+      } else {
+        diplomaExtra.innerHTML = '';
+        submitBtn.disabled = false;
+        submitBtn.style.background = '#0066bf';
+        submitBtn.style.color = '#fff';
+      }
     }
-  });
-}
 
-async function collectFormData() {
-  const data = {
-    studentName: document.getElementById('studentName').value.trim(),
-    studentId: document.getElementById('studentId').value.trim(),
-    studentMajor: document.getElementById('studentMajor').value.trim(),
-    contact: document.getElementById('contact').value.trim(),
-    graduate: document.getElementById('graduate').value,
-    registered12: document.getElementById('registered12').value,
-    category: document.getElementById('category').value,
-    details: document.getElementById('details').value.trim(),
-    extra: {},
-    file: null
-  };
+    function showOthersForIndustrialTraining(labelClass, inputClass) {
+      const issueDetails = document.getElementById('q1');
+      issueDetails.addEventListener('change', function () {
+        if (this.value === 'other_issue') {
+          toggleIssueDetails(true);
+        } else {
+          toggleIssueDetails(false);
+        }
+      });
+    }
 
-const extraInputs = document.querySelectorAll('#extraQuestions input:not([type="file"]), #extraQuestions select, #extraQuestions textarea');  extraInputs.forEach(el => {
-    const label = el.getAttribute('data-label') || el.id;
-    data.extra[label] = el.value.trim();
-  });
-
-  const fileInputs = ['scheduleUpload', 'excuseUpload'];
-
-  for (const id of fileInputs) {
-    const fileInput = document.getElementById(id);
-    if (fileInput && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const base64 = await toBase64(file);
-      data.file = {
-        name: file.name,
-        mimeType: file.type,
-        content: base64
+    async function collectFormData() {
+      const data = {
+        studentName: document.getElementById('studentName').value.trim(),
+        studentId: document.getElementById('studentId').value.trim(),
+        studentMajor: document.getElementById('studentMajor').value.trim(),
+        contact: document.getElementById('contact').value.trim(),
+        graduate: document.getElementById('graduate').value,
+        registered12: document.getElementById('registered12').value,
+        category: document.getElementById('category').value,
+        details: document.getElementById('details').value.trim(),
+        extra: {},
+        file: null
       };
-      data.extra[fileInput.id] = file.name;
+
+      const extraInputs = document.querySelectorAll('#extraQuestions input:not([type="file"]), #extraQuestions select, #extraQuestions textarea');
+      extraInputs.forEach(el => {
+        const label = el.getAttribute('data-label') || el.id;
+        data.extra[label] = el.value.trim();
+      });
+
+      const fileInputs = ['scheduleUpload', 'excuseUpload'];
+
+      for (const id of fileInputs) {
+        const fileInput = document.getElementById(id);
+        if (fileInput && fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const base64 = await toBase64(file);
+          data.file = {
+            name: file.name,
+            mimeType: file.type,
+            content: base64
+          };
+          data.extra[fileInput.id] = file.name;
+        }
+      }
+
+      return data;
     }
-  }
 
-  return data;
-}
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+      });
+    }
 
-function toBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result.split(',')[1]);
-    reader.onerror = reject;
-  });
-}
+    document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
+      const status = document.getElementById('statusMsg');
+      status.style.color = '#333';
+      status.innerText = 'Submitting...';
 
-  const status = document.getElementById('statusMsg');
-  status.style.color = '#333';
-  status.innerText = 'Submitting...';
+      try {
+        const formData = await collectFormData();
 
-  try {
-    const formData = await collectFormData();
+        const res = await fetch(proxyURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
 
-    const res = await fetch(proxyURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
+        const json = await res.json();
+
+        if (json.success) {
+          status.style.color = 'green';
+          status.innerText = 'Inquiry submitted successfully!';
+          document.getElementById('inquiryForm').reset();
+          document.getElementById('extraQuestions').innerHTML = '';
+          toggleNeedCourseOption(false);
+          toggleIssueDetails(false);
+        } else {
+          status.style.color = 'red';
+          status.innerText = 'Submission failed. Try again later.';
+        }
+      } catch (err) {
+        console.error(err);
+        status.style.color = 'red';
+        status.innerText = 'Error submitting form. Check console.';
+      }
     });
-
-    const json = await res.json();
-
-    if (json.success) {
-      status.style.color = 'green';
-      status.innerText = 'Inquiry submitted successfully!';
-      document.getElementById('inquiryForm').reset();
-      document.getElementById('extraQuestions').innerHTML = '';
-      toggleNeedCourseOption(false);
-      toggleIssueDetails(false);
-    } else {
-      status.style.color = 'red';
-      status.innerText = 'Submission failed. Try again later.';
-    }
-  } catch (err) {
-    console.error(err);
-    status.style.color = 'red';
-    status.innerText = 'Error submitting form. Check console.';
-  }
-});
-
   </script>
 </body>
 </html>
