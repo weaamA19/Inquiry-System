@@ -210,7 +210,7 @@
       const fileInput = document.getElementById(inputId);
       const statusEl = fileInput ? fileInput.nextElementSibling : null; 
       const submitBtn = document.querySelector('#inquiryForm button[type="submit"]');
-      const MAX_FILE_SIZE = 5 * 1024 * 1024;
+      const MAX_FILE_SIZE = 1 * 1024 * 1024;
     
       if (!fileInput || !statusEl || !submitBtn) return;
     
@@ -220,7 +220,7 @@
     
         if (file.size > MAX_FILE_SIZE) {
           statusEl.style.color = 'red';
-          statusEl.innerText = 'File is too big, kindly upload a smaller file (max 5 MB).';
+          statusEl.innerText = 'File is too big, kindly upload a smaller file (max 1 MB).';
           fileInput.value = '';
         submitBtn.disabled = true;
         submitBtn.style.background = '#aaa';
